@@ -15,34 +15,11 @@ namespace ModMapConverter
 {
     public partial class MainWindow : Form
     {
+		internal httpHandler httpHandler { get; set; }
 		public SettingsWindow settingsWindow { get; internal set; }
 		public bool runningSettings { get; internal set; } = false;
 		public bool Running { get; private set; } = false;
 
-		private readonly CookieContainer cJar = new CookieContainer();
-
-		public readonly string UserAgent = @"Mozilla/5.0 (Windows; Windows NT 6.1) AppleWebKit/534.23 (KHTML, like Gecko) Chrome/11.0.686.3 Safari/534.23";
-
-		public string HttpGet(string url)
-		{
-			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-			request.CookieContainer = cJar;
-			request.UserAgent = UserAgent;
-			request.KeepAlive = false;
-			request.Method = "GET";
-			HttpWebResponse response;
-			try
-			{
-				response = (HttpWebResponse)request.GetResponse();
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "bruh");
-				return "Error";
-			}
-			StreamReader sr = new StreamReader(response.GetResponseStream());
-			return sr.ReadToEnd();
-		}
 		public MainWindow()
         {
 			InitializeComponent();
@@ -63,7 +40,7 @@ namespace ModMapConverter
 			{
 				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw"))
 				{
-					string txt = HttpGet(text);
+					string txt = httpHandler.HttpGet(text);
 					if (txt == "Error")
 					{
 						return;
@@ -76,7 +53,7 @@ namespace ModMapConverter
 
 					if (dialogResult == DialogResult.Yes)
 					{
-						string txt = HttpGet(text);
+						string txt = httpHandler.HttpGet(text);
 						if (txt == "Error")
 						{
 							return;

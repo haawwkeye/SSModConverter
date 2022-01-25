@@ -24,3 +24,5 @@ H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.csproj.CoreCompileIn
 H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.csproj.CopyComplete
 H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.exe
 H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.pdb
+H:\SSModConverter\ModMapConverter\bin\Debug\Newtonsoft.Json.dll
+H:\SSModConverter\ModMapConverter\bin\Debug\Newtonsoft.Json.xml

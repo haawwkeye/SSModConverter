@@ -2,3 +2,6 @@
 
 # IDE1006: Naming Styles
 dotnet_diagnostic.IDE1006.severity = none
+
+# CS0472: The result of the expression is always the same since a value of this type is never equal to 'null'
+dotnet_diagnostic.CS0472.severity = none
