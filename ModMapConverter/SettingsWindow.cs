@@ -23,9 +23,10 @@ namespace ModMapConverter
         public void LoadSettings()
         {
             var manager = Properties.Resources.ResourceManager;
+            var settings = Properties.Settings.Default;
 
             Notes_change_fog_text.Text = manager.GetString("Notes_change_fog");
-            Notes_change_fog.Checked = Properties.Settings.Default.Notes_change_fog;
+            Notes_change_fog.Checked = settings.Notes_change_fog;
         }
 
         private void Close_Click(object sender, EventArgs e)
