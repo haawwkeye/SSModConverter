@@ -56,7 +56,6 @@ namespace ModMapConverter
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //SaveSettings(); // Save settings before close
             mainWindow.Show(); // Show the MainWindow
             mainWindow.settingsWindow = new SettingsWindow(); // since the form is closing we need to provide a new form for settings
             mainWindow.runningSettings = false; // set to false since the settings are done

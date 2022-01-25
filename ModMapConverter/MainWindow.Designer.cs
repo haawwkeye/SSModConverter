@@ -148,7 +148,7 @@ namespace ModMapConverter
         private TextBox output;
 
         private Button Settings;
+
         private Label Version;
     }
 }
-

@@ -148,8 +148,11 @@ namespace ModMapConverter
         private Button SaveBtn;
 
         private Panel SettingsPanel;
+
         private Label desc;
+
         private CheckBox Notes_change_fog;
+
         private Label label1;
     }
 }
