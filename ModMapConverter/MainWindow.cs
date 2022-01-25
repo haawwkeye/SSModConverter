@@ -46,14 +46,14 @@ namespace ModMapConverter
 		public MainWindow()
         {
 			InitializeComponent();
-			this.convertBtn.MouseClick += this.Convert;
+			convertBtn.MouseClick += Convert;
 		}
 
 		public void Convert(object sender, MouseEventArgs e)
 		{
 			Running = true;
 			string[] array;
-			string text = this.input.Text;
+			string text = input.Text;
 			if (text.Length == 0)
 			{
 				MessageBox.Show("You cannot convert a nonexistent map.", "bruh");
@@ -91,27 +91,14 @@ namespace ModMapConverter
 			}
 			JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
 
-			array = text.Split(new char[]
-				{
-					','
-				});
+			array = text.Split(new char[]{','});
 
 			jsonObject.Add("audio", "rbxassetid://" + array[0]);
 			jsonObject.Add("noteDistance", 70);
 			jsonObject.Add("colors", new JsonArray(new JsonValue[]
 			{
-				new JsonArray(new JsonValue[]
-				{
-					255,
-					0,
-					0
-				}),
-				new JsonArray(new JsonValue[]
-				{
-					0,
-					255,
-					255
-				})
+				new JsonArray(new JsonValue[]{255, 0, 0}),
+				new JsonArray(new JsonValue[]{0, 255, 255})
 			}));
 			JsonArray jsonArray = new JsonArray(Array.Empty<JsonValue>());
 			string[] array2 = array;
@@ -133,7 +120,7 @@ namespace ModMapConverter
 							},
 							{
 								"time",
-								(double)int.Parse(array3[2]) / 1000.0
+								int.Parse(array3[2]) / 1000.0
 							},
 							{
 								"length",
@@ -177,7 +164,7 @@ namespace ModMapConverter
 				Running = false;
 				return;
 			}
-			this.output.Text = jsonObject.ToString();
+			output.Text = jsonObject.ToString();
 		}
 
 		private void Settings_Click(object sender, EventArgs e)
