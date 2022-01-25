@@ -1,0 +1,12 @@
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\bin\Release\ModMapConverter.exe.config
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\bin\Release\ModMapConverter.exe
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\bin\Release\ModMapConverter.pdb
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\bin\Release\System.Json.dll
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.MainWindow.resources
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.Properties.Resources.resources
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.SettingsWindow.resources
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.csproj.GenerateResource.cache
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.csproj.CoreCompileInputs.cache
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.csproj.CopyComplete
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.exe
+C:\Users\CONNO\Desktop\MapConvert\v4\Source\ModMapConverter\obj\Release\ModMapConverter.pdb
