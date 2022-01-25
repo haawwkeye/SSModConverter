@@ -61,7 +61,7 @@ namespace ModMapConverter.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Automatically allow notes to change the fog Default: False.
+        ///   Looks up a localized string similar to Automatically allow notes to change the fog.
         /// </summary>
         internal static string Notes_change_fog {
             get {

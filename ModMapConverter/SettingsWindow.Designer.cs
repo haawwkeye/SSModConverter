@@ -38,7 +38,7 @@ namespace ModMapConverter
             this.CloseBtn = new System.Windows.Forms.Button();
             this.SaveBtn = new System.Windows.Forms.Button();
             this.SettingsPanel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.Notes_change_fog_text = new System.Windows.Forms.Label();
             this.Notes_change_fog = new System.Windows.Forms.CheckBox();
             this.desc = new System.Windows.Forms.Label();
             this.SettingsPanel.SuspendLayout();
@@ -78,7 +78,7 @@ namespace ModMapConverter
             // 
             this.SettingsPanel.AutoScroll = true;
             this.SettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.SettingsPanel.Controls.Add(this.label1);
+            this.SettingsPanel.Controls.Add(this.Notes_change_fog_text);
             this.SettingsPanel.Controls.Add(this.Notes_change_fog);
             this.SettingsPanel.Cursor = System.Windows.Forms.Cursors.Default;
             this.SettingsPanel.Location = new System.Drawing.Point(16, 91);
@@ -88,12 +88,12 @@ namespace ModMapConverter
             // 
             // label1
             // 
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(228, 26);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Automatically allow notes to change the fog";
+            this.Notes_change_fog_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Notes_change_fog_text.Location = new System.Drawing.Point(3, 0);
+            this.Notes_change_fog_text.Name = "label1";
+            this.Notes_change_fog_text.Size = new System.Drawing.Size(228, 26);
+            this.Notes_change_fog_text.TabIndex = 1;
+            this.Notes_change_fog_text.Text = "Automatically allow notes to change the fog";
             // 
             // Notes_change_fog
             // 
@@ -153,6 +153,6 @@ namespace ModMapConverter
 
         private CheckBox Notes_change_fog;
 
-        private Label label1;
+        private Label Notes_change_fog_text;
     }
 }

@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Notes_change_fog" xml:space="preserve">
-    <value>Automatically allow notes to change the fog Default: False</value>
+    <value>Automatically allow notes to change the fog</value>
   </data>
 </root>

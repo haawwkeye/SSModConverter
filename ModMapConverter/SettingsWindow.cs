@@ -22,6 +22,9 @@ namespace ModMapConverter
 
         public void LoadSettings()
         {
+            var manager = Properties.Resources.ResourceManager;
+
+            Notes_change_fog_text.Text = manager.GetString("Notes_change_fog");
             Notes_change_fog.Checked = Properties.Settings.Default.Notes_change_fog;
         }
 
@@ -35,7 +38,7 @@ namespace ModMapConverter
         private void Save_Click(object sender, EventArgs e)
         {
             bool settingsChanged = false;
-            Properties.Settings.Default.Upgrade(); // update in case there is any missing settings
+            //Properties.Settings.Default.Upgrade(); // update in case there is any missing settings
 
             if (Properties.Settings.Default.Notes_change_fog != Notes_change_fog.Checked)
             {
