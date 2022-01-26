@@ -34,7 +34,7 @@ namespace ModMapConverter
 			songAR.LostFocus += arAddText;
 
 			BSSongId.GotFocus += bsRemoveText;
-			BSSongId.GotFocus += bsAddText;
+			BSSongId.LostFocus += bsAddText;
 		}
 
 		public void ChangeType(object sender, EventArgs e)
