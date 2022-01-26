@@ -65,12 +65,13 @@ namespace ModMapConverter
                 {
                     JObject GitReturn = JObject.Parse(json);
                     float version = Properties.Settings.Default.Version;
-                    string tag = GitReturn["tag_name"].ToString();
-                    //tag.Remove(0);
+                    string tag = GitReturn["tag_name"].ToString().Substring(1);
 
                     bool s1 = float.TryParse(tag, out float tagVerF);
                     bool s2 = int.TryParse(tag, out int tagVerI);
                     bool s3 = double.TryParse(tag, out double tagVerD);
+
+                    Console.WriteLine(tag);
 
                     if ((s1 & tagVerF > version) || (s2 & tagVerI > version) || (s3 & tagVerD > version))
                     {
