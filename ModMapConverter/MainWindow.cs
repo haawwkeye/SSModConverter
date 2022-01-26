@@ -15,7 +15,7 @@ namespace ModMapConverter
 {
     public partial class MainWindow : Form
     {
-		internal httpHandler httpHandler { get; set; }
+		internal httpHandler httpHandler { get; set; } = new httpHandler();
 		public SettingsWindow settingsWindow { get; internal set; }
 		public bool runningSettings { get; internal set; } = false;
 		public bool Running { get; private set; } = false;
@@ -31,6 +31,7 @@ namespace ModMapConverter
 			bool fakeCursor = false;
 			bool osuNotes = false;
 			double.TryParse(SongLength.Text, out double songLength);
+			double offset = 0;
 
 			if (Running)
             {
@@ -95,8 +96,10 @@ namespace ModMapConverter
 			}));
 			JsonArray jsonArray = new JsonArray(Array.Empty<JsonValue>());
 			string[] array2 = array;
+			/**/
 			try
 			{
+			/**/
 				for (int i = 0; i < array2.Length; i++)
 				{
 					string[] array3 = array2[i].Split(new char[]
@@ -107,84 +110,173 @@ namespace ModMapConverter
 					{
 						jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 						{
-							{
-								"type",
-								0
-							},
-							{
-								"time",
-								int.Parse(array3[2]) / 1000.0
-							},
-							{
-								"length",
-								1
-							},
-							{
-								"position",
-								new JsonArray(new JsonValue[]
-								{
-									-(2.0 * (double.Parse(array3[0]) - 1.0)),
-									(2.0 * (double.Parse(array3[1]) - 1.0))
-								})
-							},
-							{
-								"color",
-								0
-							},
-							{
-								"transparency",
-								0
-							},
-							{
-								"fog",
-								Properties.Settings.Default.Notes_change_fog
-							},
-							{
-								"animation",
-								(osuNotes & new JsonArray(new JsonValue[]) || new JsonArray(Array.Empty<JsonValue>()))
-							}
+							{"type", 0},
+							{"time", int.Parse(array3[2]) / 1000.0},
+							{"length", 1},
+							{"position", new JsonArray(new JsonValue[] { -(2.0 * (double.Parse(array3[0]) - 1.0)), (2.0 * (double.Parse(array3[1]) - 1.0)) })},
+							{"color", 0},
+							{"transparency", 0},
+							{"fog", Properties.Settings.Default.Notes_change_fog},
+							{"animation", new JsonArray(Array.Empty<JsonValue>()) }
 						});
 
+						var note = jsonArray.Count-1;
+						//Console.WriteLine(note);
 						if (osuNotes)
-                        {
-							
-                        }
+						{
+							var obj = jsonArray[note];
+
+							obj["length"] = 0.8;
+
+							obj["animation"] = new JsonArray(Array.Empty<JsonValue>()) {
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+									{ "time", 0 },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], 0 }) },
+									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+									{ "transparency", 0.4 }
+								},
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+									{ "time", 1 },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], 0 }) },
+									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+									{ "transparency", 0 }
+								}
+							};
+
+							jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+							{
+								{"type", 1},
+								{"time", obj["time"] - 0.8},
+								{"length", 0.8},
+								{"position",  new JsonArray(new JsonValue[]{0, 0, 0})},
+								{"rotation", new JsonArray(new JsonValue[]{0, 0, 0})},
+								{"size", new JsonArray(new JsonValue[]{0, 0, 0})},
+								{"transparency", 0},
+								{"material", 0},
+								{"appearance", 1},
+								{"color", 0},
+								{"animation", new JsonArray(Array.Empty<JsonValue>()) }
+							});
+
+							var effectobj = jsonArray[jsonArray.Count-1];
+
+							effectobj["animation"] = new JsonArray(Array.Empty<JsonValue>())
+							{
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+									{ "time", 0 },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], -0.5 }) },
+									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+									{ "size", new JsonArray(new JsonValue[] { 5.5, 5.5, 0 }) },
+									{ "transparency", 1 }
+								},
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+									{ "time", 1 },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], 0 }) },
+									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+									{ "size", new JsonArray(new JsonValue[] { 1.75, 1.75, 0 }) },
+									{ "transparency", 0.4 }
+								}
+							};
+						}
 					}
 				}
-				jsonObject.Add("objects", jsonArray);
 
-				if (fakeCursor || osuNotes)
+				if (fakeCursor)
 				{
-					JsonArray evntJsonArray = new JsonArray(Array.Empty<JsonValue>());
-
-					if (fakeCursor)
+					jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 					{
-						if (songLength != null)
-						{
-							evntJsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
-							{
+						{"type", 1},
+						{"time", 0},
+						{"length", 0},
+						{"position",  new JsonArray(new JsonValue[]{0, 0, 0})},
+						{"rotation", new JsonArray(new JsonValue[]{0, 0, 0})},
+						{"size", new JsonArray(new JsonValue[]{0, 0, 0})},
+						{"transparency", 0},
+						{"material", 0},
+						{"appearance", 1},
+						{"color", 0},
+						{"animation", new JsonArray(Array.Empty<JsonValue>()) {
+							new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+								{ "time", 0 },
+								{ "ease", 0 },
+								{ "position", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+								{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+								{ "size", new JsonArray(new JsonValue[] { 0.525, 0.525, 0.05 }) },
+								{ "transparency", 1 }
+							}
+						}}
+					});
 
-							});
+					var cursor = jsonArray.Count - 1;
+                    JsonArray cursorAnimation = new JsonArray(Array.Empty<JsonValue>())
+					{
+						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+							{ "time", 0 },
+							{ "ease", 0 },
+							{ "position", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+							{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+							{ "size", new JsonArray(new JsonValue[] { 0.525, 0.525, 0.05 }) },
+							{ "transparency", 1 }
+						}, new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+							{ "time", 1 },
+							{ "ease", 0 },
+							{ "position", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+							{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 540 }) },
+							{ "size", new JsonArray(new JsonValue[] { 0.525, 0.525, 0.05 }) },
+							{ "transparency", 1 }
 						}
-						else
-						{
-							MessageBox.Show("Please put the songs length in the textbox at the buttom of the 'Extra' panel", "Error");
-						}
+					};
+
+                    for (int i = jsonArray.Count-1; i > 0; i--)
+					{
+						var cursorObj = jsonArray[cursor];
+						var note = jsonArray[i];
+
+						if (note["type"] != 0)
+							continue;
+
+						cursorObj["length"] = note["time"] + 2; // add 2 seconds since it just disappers after this
+						break;
 					}
 
-					if (osuNotes)
+				for (int i = 0; i < jsonArray.Count; i++)
 					{
-						evntJsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
-						{
+						var cursorObj = jsonArray[cursor];
+						var note = jsonArray[i];
 
+						if (note["type"] != 0)
+							continue;
+
+						double ct = cursorObj["length"];
+						double nt = (note["time"] + offset) / ct;
+						double td = (nt - ct);
+						double tt = ct + (td / 2);
+
+						cursorAnimation.AddRange(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+							{ "time", ct },
+							{ "ease", 0 },
+							{ "position", new JsonArray(new JsonValue[] { note["position"][0], note["position"][1], 0 }) },
+							{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+							{ "size", new JsonArray(new JsonValue[] { 0.525, 0.525, 0.05 }) },
+							{ "transparency", 0.25 }
+						}, new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
+							{ "time", tt},
+							{ "ease", 0 },
+							{ "position", new JsonArray(new JsonValue[] { note["position"][0], note["position"][1], 0 }) },
+							{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
+							{ "size", new JsonArray(new JsonValue[] { 0.775, 0.775, 0.05 }) },
+							{ "transparency", 0.25 }
 						});
 					}
 
-					//jsonObject.Add("objects", evntJsonArray);
+					jsonArray[cursor]["animation"] = cursorAnimation;
 				}
+
+				jsonObject.Add("objects", jsonArray);
 				jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 				jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
 				Running = false;
+			/**/
 			}
 			catch (Exception ex)
 			{
@@ -192,6 +284,7 @@ namespace ModMapConverter
 				Running = false;
 				return;
 			}
+			/**/
 			output.Text = jsonObject.ToString();
 		}
 

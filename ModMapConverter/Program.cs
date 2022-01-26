@@ -22,23 +22,23 @@ namespace ModMapConverter
 
         public string HttpGet(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = cJar;
-            request.UserAgent = UserAgent;
-            request.KeepAlive = false;
-            request.Method = "GET";
             HttpWebResponse response;
             try
             {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.CookieContainer = cJar;
+                request.UserAgent = UserAgent;
+                request.KeepAlive = false;
+                request.Method = "GET";
                 response = (HttpWebResponse)request.GetResponse();
+                StreamReader sr = new StreamReader(response.GetResponseStream());
+                return sr.ReadToEnd();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "bruh");
                 return "Error";
             }
-            StreamReader sr = new StreamReader(response.GetResponseStream());
-            return sr.ReadToEnd();
         }
     }
 

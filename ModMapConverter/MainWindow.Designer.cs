@@ -41,9 +41,9 @@ namespace ModMapConverter
             this.Version = new System.Windows.Forms.Label();
             this.ExtraTitle = new System.Windows.Forms.Label();
             this.ExtraPanel = new System.Windows.Forms.Panel();
+            this.SongLength = new System.Windows.Forms.TextBox();
             this.OsuNote = new System.Windows.Forms.CheckBox();
             this.FakeCursor = new System.Windows.Forms.CheckBox();
-            this.SongLength = new System.Windows.Forms.TextBox();
             this.ExtraPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,6 +137,14 @@ namespace ModMapConverter
             this.ExtraPanel.Size = new System.Drawing.Size(89, 199);
             this.ExtraPanel.TabIndex = 10;
             // 
+            // SongLength
+            // 
+            this.SongLength.Location = new System.Drawing.Point(5, 172);
+            this.SongLength.Name = "SongLength";
+            this.SongLength.Size = new System.Drawing.Size(75, 20);
+            this.SongLength.TabIndex = 2;
+            this.SongLength.Text = "SongLength";
+            // 
             // OsuNote
             // 
             this.OsuNote.AutoSize = true;
@@ -150,6 +158,7 @@ namespace ModMapConverter
             // FakeCursor
             // 
             this.FakeCursor.AutoSize = true;
+            this.FakeCursor.Enabled = false;
             this.FakeCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FakeCursor.Location = new System.Drawing.Point(2, 3);
             this.FakeCursor.Name = "FakeCursor";
@@ -157,14 +166,6 @@ namespace ModMapConverter
             this.FakeCursor.TabIndex = 0;
             this.FakeCursor.Text = "Fake Cursor";
             this.FakeCursor.UseVisualStyleBackColor = true;
-            // 
-            // SongLength
-            // 
-            this.SongLength.Location = new System.Drawing.Point(5, 172);
-            this.SongLength.Name = "SongLength";
-            this.SongLength.Size = new System.Drawing.Size(75, 20);
-            this.SongLength.TabIndex = 2;
-            this.SongLength.Text = "SongLength";
             // 
             // MainWindow
             // 
