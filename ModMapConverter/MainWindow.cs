@@ -15,7 +15,7 @@ namespace ModMapConverter
 {
     public partial class MainWindow : Form
     {
-		internal httpHandler httpHandler { get; set; } = new httpHandler();
+		internal httpHandler httpHandler { get; private set; } = new httpHandler();
 		public SettingsWindow settingsWindow { get; internal set; }
 		public bool runningSettings { get; internal set; } = false;
 		public bool Running { get; private set; } = false;
@@ -24,13 +24,28 @@ namespace ModMapConverter
         {
 			InitializeComponent();
 			convertBtn.MouseClick += Convert;
+
+			osuAR.GotFocus += RemoveText;
+			osuAR.LostFocus += AddText;
+		}
+
+		public void RemoveText(object sender, EventArgs e)
+		{
+			if (osuAR.Text == "Enter osu AR")
+				osuAR.Text = "";
+		}
+
+		public void AddText(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(osuAR.Text))
+				osuAR.Text = "Enter osu AR";
 		}
 
 		public void Convert(object sender, MouseEventArgs e)
 		{
-			bool fakeCursor = false;
-			bool osuNotes = false;
-			double.TryParse(SongLength.Text, out double songLength);
+			bool fakeCursor = FakeCursor.Checked;
+			bool osuNotes = OsuNote.Checked;
+			bool sar = double.TryParse(osuAR.Text, out double osuar);
 			double offset = 0;
 
 			if (Running)
@@ -38,11 +53,6 @@ namespace ModMapConverter
 				MessageBox.Show("Already running", "Error");
 				return;
             }
-			else
-            {
-				fakeCursor = FakeCursor.Checked;
-				osuNotes = OsuNote.Checked;
-			}
 
 			Running = true;
 
@@ -87,8 +97,20 @@ namespace ModMapConverter
 
 			array = text.Split(new char[]{','});
 
+			double AR;
+			if (sar && osuNotes)
+				AR = osuar;
+			else
+				AR = 0;
+
 			jsonObject.Add("audio", "rbxassetid://" + array[0]);
-			jsonObject.Add("noteDistance", 70);
+
+			if (AR != 0)
+				jsonObject.Add("noteDistance", AR);
+			else
+				jsonObject.Add("noteDistance", 70);
+
+
 			jsonObject.Add("colors", new JsonArray(new JsonValue[]
 			{
 				new JsonArray(new JsonValue[]{255, 0, 0}),
@@ -99,7 +121,8 @@ namespace ModMapConverter
 			/**/
 			try
 			{
-			/**/
+				/**/
+
 				for (int i = 0; i < array2.Length; i++)
 				{
 					string[] array3 = array2[i].Split(new char[]
@@ -131,7 +154,7 @@ namespace ModMapConverter
 							obj["animation"] = new JsonArray(Array.Empty<JsonValue>()) {
 								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
 									{ "time", 0 },
-									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], 0 }) },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], -AR }) },
 									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
 									{ "transparency", 0.4 }
 								},
@@ -164,7 +187,7 @@ namespace ModMapConverter
 							{
 								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
 									{ "time", 0 },
-									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], -0.5 }) },
+									{ "position", new JsonArray(new JsonValue[] { obj["position"][0], obj["position"][1], -AR + -0.5 }) },
 									{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
 									{ "size", new JsonArray(new JsonValue[] { 5.5, 5.5, 0 }) },
 									{ "transparency", 1 }
@@ -208,6 +231,7 @@ namespace ModMapConverter
 					});
 
 					var cursor = jsonArray.Count - 1;
+
                     JsonArray cursorAnimation = new JsonArray(Array.Empty<JsonValue>())
 					{
 						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
@@ -247,10 +271,12 @@ namespace ModMapConverter
 						if (note["type"] != 0)
 							continue;
 
-						double ct = cursorObj["length"];
-						double nt = (note["time"] + offset) / ct;
+						double ct = (note["time"] + offset) / cursorObj["length"];
+						double nt = (note["time"] + offset) / cursorObj["length"];
 						double td = (nt - ct);
 						double tt = ct + (td / 2);
+
+						//Console.WriteLine(i + ", " + td + ", " + tt);
 
 						cursorAnimation.AddRange(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>()) {
 							{ "time", ct },
@@ -264,13 +290,15 @@ namespace ModMapConverter
 							{ "ease", 0 },
 							{ "position", new JsonArray(new JsonValue[] { note["position"][0], note["position"][1], 0 }) },
 							{ "rotation", new JsonArray(new JsonValue[] { 0, 0, 0 }) },
-							{ "size", new JsonArray(new JsonValue[] { 0.775, 0.775, 0.05 }) },
+							{ "size", new JsonArray(new JsonValue[] { 0.525, 0.525, 0.05 }) }, //{ 0.775, 0.775, 0.05 }) },
 							{ "transparency", 0.25 }
 						});
 					}
 
 					jsonArray[cursor]["animation"] = cursorAnimation;
 				}
+
+				Console.WriteLine(jsonArray.Count);
 
 				jsonObject.Add("objects", jsonArray);
 				jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));

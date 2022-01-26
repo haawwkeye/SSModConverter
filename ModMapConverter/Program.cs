@@ -68,11 +68,11 @@ namespace ModMapConverter
                     string tag = GitReturn["tag_name"].ToString();
                     //tag.Remove(0);
 
-                    float.TryParse(tag, out float tagVerF);
-                    int.TryParse(tag, out int tagVerI);
-                    double.TryParse(tag, out double tagVerD);
+                    bool s1 = float.TryParse(tag, out float tagVerF);
+                    bool s2 = int.TryParse(tag, out int tagVerI);
+                    bool s3 = double.TryParse(tag, out double tagVerD);
 
-                    if ((tagVerF != null & tagVerF > version) || (tagVerI != null & tagVerI > version) || (tagVerD != null & tagVerD > version))
+                    if ((s1 & tagVerF > version) || (s2 & tagVerI > version) || (s3 & tagVerD > version))
                     {
                         var result = MessageBox.Show("New version found would you like to update from v" + version.ToString() + " to " + tag, "Update", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                         if (result == DialogResult.Yes)

@@ -41,7 +41,7 @@ namespace ModMapConverter
             this.Version = new System.Windows.Forms.Label();
             this.ExtraTitle = new System.Windows.Forms.Label();
             this.ExtraPanel = new System.Windows.Forms.Panel();
-            this.SongLength = new System.Windows.Forms.TextBox();
+            this.osuAR = new System.Windows.Forms.TextBox();
             this.OsuNote = new System.Windows.Forms.CheckBox();
             this.FakeCursor = new System.Windows.Forms.CheckBox();
             this.ExtraPanel.SuspendLayout();
@@ -129,7 +129,7 @@ namespace ModMapConverter
             // 
             this.ExtraPanel.BackColor = System.Drawing.SystemColors.Window;
             this.ExtraPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ExtraPanel.Controls.Add(this.SongLength);
+            this.ExtraPanel.Controls.Add(this.osuAR);
             this.ExtraPanel.Controls.Add(this.OsuNote);
             this.ExtraPanel.Controls.Add(this.FakeCursor);
             this.ExtraPanel.Location = new System.Drawing.Point(258, 30);
@@ -137,13 +137,13 @@ namespace ModMapConverter
             this.ExtraPanel.Size = new System.Drawing.Size(89, 199);
             this.ExtraPanel.TabIndex = 10;
             // 
-            // SongLength
+            // osuAR
             // 
-            this.SongLength.Location = new System.Drawing.Point(5, 172);
-            this.SongLength.Name = "SongLength";
-            this.SongLength.Size = new System.Drawing.Size(75, 20);
-            this.SongLength.TabIndex = 2;
-            this.SongLength.Text = "SongLength";
+            this.osuAR.Location = new System.Drawing.Point(5, 172);
+            this.osuAR.Name = "osuAR";
+            this.osuAR.Size = new System.Drawing.Size(75, 20);
+            this.osuAR.TabIndex = 2;
+            this.osuAR.Text = "Enter osu AR";
             // 
             // OsuNote
             // 
@@ -158,7 +158,6 @@ namespace ModMapConverter
             // FakeCursor
             // 
             this.FakeCursor.AutoSize = true;
-            this.FakeCursor.Enabled = false;
             this.FakeCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FakeCursor.Location = new System.Drawing.Point(2, 3);
             this.FakeCursor.Name = "FakeCursor";
@@ -216,6 +215,6 @@ namespace ModMapConverter
         private Panel ExtraPanel;
         private CheckBox OsuNote;
         private CheckBox FakeCursor;
-        private TextBox SongLength;
+        private TextBox osuAR;
     }
 }
