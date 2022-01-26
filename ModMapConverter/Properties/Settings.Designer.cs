@@ -37,7 +37,7 @@ namespace ModMapConverter.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("4.3")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.4")]
         public float Version {
             get {
                 return ((float)(this["Version"]));
