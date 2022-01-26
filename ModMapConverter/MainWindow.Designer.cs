@@ -39,6 +39,12 @@ namespace ModMapConverter
             this.output = new System.Windows.Forms.TextBox();
             this.Settings = new System.Windows.Forms.Button();
             this.Version = new System.Windows.Forms.Label();
+            this.ExtraTitle = new System.Windows.Forms.Label();
+            this.ExtraPanel = new System.Windows.Forms.Panel();
+            this.SongLength = new System.Windows.Forms.TextBox();
+            this.OsuNote = new System.Windows.Forms.CheckBox();
+            this.FakeCursor = new System.Windows.Forms.CheckBox();
+            this.ExtraPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // title
@@ -102,18 +108,72 @@ namespace ModMapConverter
             this.Version.AutoSize = true;
             this.Version.BackColor = System.Drawing.Color.Transparent;
             this.Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Version.ForeColor = Color.FromArgb(255, 220, 220, 220);
+            this.Version.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.Version.Location = new System.Drawing.Point(0, 0);
             this.Version.Name = "Version";
-            this.Version.Size = new System.Drawing.Size(22, 13);
+            this.Version.Size = new System.Drawing.Size(33, 13);
             this.Version.TabIndex = 7;
-            this.Version.Text = "V" + Properties.Settings.Default.Version.ToString();
+            this.Version.Text = "V4.2";
+            // 
+            // ExtraTitle
+            // 
+            this.ExtraTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExtraTitle.Location = new System.Drawing.Point(258, 8);
+            this.ExtraTitle.Name = "ExtraTitle";
+            this.ExtraTitle.Size = new System.Drawing.Size(89, 19);
+            this.ExtraTitle.TabIndex = 9;
+            this.ExtraTitle.Text = "Extra";
+            this.ExtraTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // ExtraPanel
+            // 
+            this.ExtraPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.ExtraPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ExtraPanel.Controls.Add(this.SongLength);
+            this.ExtraPanel.Controls.Add(this.OsuNote);
+            this.ExtraPanel.Controls.Add(this.FakeCursor);
+            this.ExtraPanel.Location = new System.Drawing.Point(258, 30);
+            this.ExtraPanel.Name = "ExtraPanel";
+            this.ExtraPanel.Size = new System.Drawing.Size(89, 199);
+            this.ExtraPanel.TabIndex = 10;
+            // 
+            // SongLength
+            // 
+            this.SongLength.Location = new System.Drawing.Point(5, 172);
+            this.SongLength.Name = "SongLength";
+            this.SongLength.Size = new System.Drawing.Size(75, 20);
+            this.SongLength.TabIndex = 2;
+            this.SongLength.Text = "SongLength";
+            // 
+            // OsuNote
+            // 
+            this.OsuNote.AutoSize = true;
+            this.OsuNote.Location = new System.Drawing.Point(2, 22);
+            this.OsuNote.Name = "OsuNote";
+            this.OsuNote.Size = new System.Drawing.Size(77, 17);
+            this.OsuNote.TabIndex = 1;
+            this.OsuNote.Text = "osu! Notes";
+            this.OsuNote.UseVisualStyleBackColor = true;
+            // 
+            // FakeCursor
+            // 
+            this.FakeCursor.AutoSize = true;
+            this.FakeCursor.Enabled = false;
+            this.FakeCursor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FakeCursor.Location = new System.Drawing.Point(2, 3);
+            this.FakeCursor.Name = "FakeCursor";
+            this.FakeCursor.Size = new System.Drawing.Size(83, 17);
+            this.FakeCursor.TabIndex = 0;
+            this.FakeCursor.Text = "Fake Cursor";
+            this.FakeCursor.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(264, 241);
+            this.ClientSize = new System.Drawing.Size(352, 241);
+            this.Controls.Add(this.ExtraPanel);
+            this.Controls.Add(this.ExtraTitle);
             this.Controls.Add(this.Version);
             this.Controls.Add(this.Settings);
             this.Controls.Add(this.output);
@@ -130,6 +190,8 @@ namespace ModMapConverter
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mod Map Converter by Kermeet";
             this.TopMost = true;
+            this.ExtraPanel.ResumeLayout(false);
+            this.ExtraPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -150,5 +212,10 @@ namespace ModMapConverter
         private Button Settings;
 
         private Label Version;
+        private Label ExtraTitle;
+        private Panel ExtraPanel;
+        private CheckBox OsuNote;
+        private CheckBox FakeCursor;
+        private TextBox SongLength;
     }
 }
