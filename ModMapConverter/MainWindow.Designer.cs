@@ -43,7 +43,7 @@ namespace ModMapConverter
             this.ExtraPanel = new System.Windows.Forms.Panel();
             this.BSSongId = new System.Windows.Forms.TextBox();
             this.convertType = new System.Windows.Forms.Button();
-            this.osuAR = new System.Windows.Forms.TextBox();
+            this.songAR = new System.Windows.Forms.TextBox();
             this.OsuNote = new System.Windows.Forms.CheckBox();
             this.FakeCursor = new System.Windows.Forms.CheckBox();
             this.ExtraPanel.SuspendLayout();
@@ -133,7 +133,7 @@ namespace ModMapConverter
             this.ExtraPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ExtraPanel.Controls.Add(this.BSSongId);
             this.ExtraPanel.Controls.Add(this.convertType);
-            this.ExtraPanel.Controls.Add(this.osuAR);
+            this.ExtraPanel.Controls.Add(this.songAR);
             this.ExtraPanel.Controls.Add(this.OsuNote);
             this.ExtraPanel.Controls.Add(this.FakeCursor);
             this.ExtraPanel.Location = new System.Drawing.Point(258, 30);
@@ -160,13 +160,13 @@ namespace ModMapConverter
             this.convertType.Text = "Convert: SS";
             this.convertType.UseVisualStyleBackColor = true;
             // 
-            // osuAR
+            // songAR
             // 
-            this.osuAR.Location = new System.Drawing.Point(-2, 152);
-            this.osuAR.Name = "osuAR";
-            this.osuAR.Size = new System.Drawing.Size(89, 20);
-            this.osuAR.TabIndex = 2;
-            this.osuAR.Text = "Enter osu AR";
+            this.songAR.Location = new System.Drawing.Point(-2, 152);
+            this.songAR.Name = "songAR";
+            this.songAR.Size = new System.Drawing.Size(89, 20);
+            this.songAR.TabIndex = 2;
+            this.songAR.Text = "Enter AR";
             // 
             // OsuNote
             // 
@@ -232,7 +232,7 @@ namespace ModMapConverter
         private Panel ExtraPanel;
         private CheckBox OsuNote;
         private CheckBox FakeCursor;
-        private TextBox osuAR;
+        private TextBox songAR;
         private Button convertType;
         private TextBox BSSongId;
     }

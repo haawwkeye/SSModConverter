@@ -30,8 +30,8 @@ namespace ModMapConverter
 			convertBtn.MouseClick += Convert;
 			convertType.MouseClick += ChangeType;
 
-			osuAR.GotFocus += osuRemoveText;
-			osuAR.LostFocus += osuAddText;
+			songAR.GotFocus += arRemoveText;
+			songAR.LostFocus += arAddText;
 
 			BSSongId.GotFocus += bsRemoveText;
 			BSSongId.GotFocus += bsAddText;
@@ -74,16 +74,16 @@ namespace ModMapConverter
 			isConvertingType = false;
 		}
 
-		public void osuRemoveText(object sender, EventArgs e)
+		public void arRemoveText(object sender, EventArgs e)
 		{
-			if (osuAR.Text == "Enter osu AR")
-				osuAR.Text = "";
+			if (songAR.Text == "Enter AR")
+				songAR.Text = "";
 		}
 
-		public void osuAddText(object sender, EventArgs e)
+		public void arAddText(object sender, EventArgs e)
 		{
-			if (string.IsNullOrWhiteSpace(osuAR.Text))
-				osuAR.Text = "Enter osu AR";
+			if (string.IsNullOrWhiteSpace(songAR.Text))
+				songAR.Text = "Enter AR";
 		}
 
 		public void bsRemoveText(object sender, EventArgs e)
@@ -102,7 +102,7 @@ namespace ModMapConverter
 		{
 			bool fakeCursor = FakeCursor.Checked;
 			bool osuNotes = OsuNote.Checked;
-			bool sar = double.TryParse(osuAR.Text, out double osuar);
+			bool sar = double.TryParse(songAR.Text, out double songar);
 			double offset = 0;
 			string type = convertType.Text.Substring(9);
 
@@ -112,7 +112,16 @@ namespace ModMapConverter
 				return;
             }
 
-			isConvertingMap = true;
+			if (type == "SSJ")
+            {
+				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
+				return;
+            }
+			else if (type == "BS")
+			{
+				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+				return;
+			}
 
 			string[] array;
 			string text = input.Text;
@@ -123,6 +132,7 @@ namespace ModMapConverter
 			}
 			else
 			{
+				isConvertingMap = true;
 				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw"))
 				{
 					string txt = httpHandler.HttpGet(text);
@@ -156,18 +166,16 @@ namespace ModMapConverter
 
 			array = text.Split(new char[]{','});
 
-			double AR;
-			if (sar && osuNotes)
-				AR = osuar;
-			else
-				AR = 0;
+			double AR = 70;
+
+			if (sar)
+			{
+				AR = songar;
+			}
 
 			jsonObject.Add("audio", "rbxassetid://" + array[0]);
 
-			if (AR != 0)
-				jsonObject.Add("noteDistance", AR);
-			else
-				jsonObject.Add("noteDistance", 70);
+			jsonObject.Add("noteDistance", AR);
 
 
 			jsonObject.Add("colors", new JsonArray(new JsonValue[]
@@ -180,7 +188,7 @@ namespace ModMapConverter
 			/**/
 			try
 			{
-				/**/
+			/**/
 
 				for (int i = 0; i < array2.Length; i++)
 				{
