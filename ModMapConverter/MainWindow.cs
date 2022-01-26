@@ -18,27 +18,84 @@ namespace ModMapConverter
 		internal httpHandler httpHandler { get; private set; } = new httpHandler();
 		public SettingsWindow settingsWindow { get; internal set; }
 		public bool runningSettings { get; internal set; } = false;
-		public bool Running { get; private set; } = false;
+		public bool isConvertingMap { get; private set; } = false;
+		public bool isConvertingType { get; private set; } = false;
 
 		public MainWindow()
         {
 			InitializeComponent();
-			convertBtn.MouseClick += Convert;
 
-			osuAR.GotFocus += RemoveText;
-			osuAR.LostFocus += AddText;
+			Version.Text = "V" + Properties.Settings.Default.Version;
+
+			convertBtn.MouseClick += Convert;
+			convertType.MouseClick += ChangeType;
+
+			osuAR.GotFocus += osuRemoveText;
+			osuAR.LostFocus += osuAddText;
+
+			BSSongId.GotFocus += bsRemoveText;
+			BSSongId.GotFocus += bsAddText;
 		}
 
-		public void RemoveText(object sender, EventArgs e)
+		public void ChangeType(object sender, EventArgs e)
+		{
+			if (isConvertingType)
+				return;
+
+			isConvertingType = true;
+
+			string type = convertType.Text.Substring(9);
+
+			if (type == "SS")
+			{
+				convertType.Text = "Convert: BS";
+				type = "BS";
+			}
+			else if (type == "BS")
+			{
+				convertType.Text = "Convert: SSJ";
+				type = "SSJ";
+			}
+			else
+			{
+				convertType.Text = "Convert: SS";
+				type = "SS";
+			}
+
+			if (type == "BS")
+            {
+				BSSongId.Visible = true;
+            }
+			else
+            {
+				BSSongId.Visible = false;
+			}
+
+			isConvertingType = false;
+		}
+
+		public void osuRemoveText(object sender, EventArgs e)
 		{
 			if (osuAR.Text == "Enter osu AR")
 				osuAR.Text = "";
 		}
 
-		public void AddText(object sender, EventArgs e)
+		public void osuAddText(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(osuAR.Text))
 				osuAR.Text = "Enter osu AR";
+		}
+
+		public void bsRemoveText(object sender, EventArgs e)
+		{
+			if (BSSongId.Text == "Enter BS SongId")
+				BSSongId.Text = "";
+		}
+
+		public void bsAddText(object sender, EventArgs e)
+		{
+			if (string.IsNullOrWhiteSpace(BSSongId.Text))
+				BSSongId.Text = "Enter BS SongId";
 		}
 
 		public void Convert(object sender, MouseEventArgs e)
@@ -47,14 +104,15 @@ namespace ModMapConverter
 			bool osuNotes = OsuNote.Checked;
 			bool sar = double.TryParse(osuAR.Text, out double osuar);
 			double offset = 0;
+			string type = convertType.Text.Substring(9);
 
-			if (Running)
+			if (isConvertingMap)
             {
 				MessageBox.Show("Already running", "Error");
 				return;
             }
 
-			Running = true;
+			isConvertingMap = true;
 
 			string[] array;
 			string text = input.Text;
@@ -93,6 +151,7 @@ namespace ModMapConverter
 					}
 				}
 			}
+
 			JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
 
 			array = text.Split(new char[]{','});
@@ -303,13 +362,13 @@ namespace ModMapConverter
 				jsonObject.Add("objects", jsonArray);
 				jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 				jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
-				Running = false;
+				isConvertingMap = false;
 			/**/
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				Running = false;
+				isConvertingMap = false;
 				return;
 			}
 			/**/
@@ -318,7 +377,7 @@ namespace ModMapConverter
 
 		private void Settings_Click(object sender, EventArgs e)
 		{
-			if (Running)
+			if (isConvertingMap)
 			{
 				return;
 			}

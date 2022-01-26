@@ -41,6 +41,8 @@ namespace ModMapConverter
             this.Version = new System.Windows.Forms.Label();
             this.ExtraTitle = new System.Windows.Forms.Label();
             this.ExtraPanel = new System.Windows.Forms.Panel();
+            this.BSSongId = new System.Windows.Forms.TextBox();
+            this.convertType = new System.Windows.Forms.Button();
             this.osuAR = new System.Windows.Forms.TextBox();
             this.OsuNote = new System.Windows.Forms.CheckBox();
             this.FakeCursor = new System.Windows.Forms.CheckBox();
@@ -111,9 +113,9 @@ namespace ModMapConverter
             this.Version.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.Version.Location = new System.Drawing.Point(0, 0);
             this.Version.Name = "Version";
-            this.Version.Size = new System.Drawing.Size(33, 13);
+            this.Version.Size = new System.Drawing.Size(53, 13);
             this.Version.TabIndex = 7;
-            this.Version.Text = "V4.2";
+            this.Version.Text = "Uknown";
             // 
             // ExtraTitle
             // 
@@ -129,6 +131,8 @@ namespace ModMapConverter
             // 
             this.ExtraPanel.BackColor = System.Drawing.SystemColors.Window;
             this.ExtraPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ExtraPanel.Controls.Add(this.BSSongId);
+            this.ExtraPanel.Controls.Add(this.convertType);
             this.ExtraPanel.Controls.Add(this.osuAR);
             this.ExtraPanel.Controls.Add(this.OsuNote);
             this.ExtraPanel.Controls.Add(this.FakeCursor);
@@ -137,11 +141,30 @@ namespace ModMapConverter
             this.ExtraPanel.Size = new System.Drawing.Size(89, 199);
             this.ExtraPanel.TabIndex = 10;
             // 
+            // BSSongId
+            // 
+            this.BSSongId.Location = new System.Drawing.Point(-2, 132);
+            this.BSSongId.Name = "BSSongId";
+            this.BSSongId.Size = new System.Drawing.Size(89, 20);
+            this.BSSongId.TabIndex = 12;
+            this.BSSongId.Text = "Enter BS SongId";
+            this.BSSongId.Visible = false;
+            // 
+            // convertType
+            // 
+            this.convertType.AutoSize = true;
+            this.convertType.Location = new System.Drawing.Point(-2, 172);
+            this.convertType.Name = "convertType";
+            this.convertType.Size = new System.Drawing.Size(89, 23);
+            this.convertType.TabIndex = 11;
+            this.convertType.Text = "Convert: SS";
+            this.convertType.UseVisualStyleBackColor = true;
+            // 
             // osuAR
             // 
-            this.osuAR.Location = new System.Drawing.Point(5, 172);
+            this.osuAR.Location = new System.Drawing.Point(-2, 152);
             this.osuAR.Name = "osuAR";
-            this.osuAR.Size = new System.Drawing.Size(75, 20);
+            this.osuAR.Size = new System.Drawing.Size(89, 20);
             this.osuAR.TabIndex = 2;
             this.osuAR.Text = "Enter osu AR";
             // 
@@ -199,22 +222,18 @@ namespace ModMapConverter
         #endregion
 
         private Label title;
-
         private Label desc;
-
         private Button convertBtn;
-
         private TextBox input;
-
         private TextBox output;
-
         private Button Settings;
-
         private Label Version;
         private Label ExtraTitle;
         private Panel ExtraPanel;
         private CheckBox OsuNote;
         private CheckBox FakeCursor;
         private TextBox osuAR;
+        private Button convertType;
+        private TextBox BSSongId;
     }
 }
