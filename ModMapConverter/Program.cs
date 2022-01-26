@@ -79,6 +79,7 @@ namespace ModMapConverter
                         {
                             var downloadLink = "https://github.com/haawwkeye/SSModConverter/releases/download/" + tag + "/ModMapConverter.zip";
                             DownloadHandler.Handler.StartDownload(downloadLink);
+                            return; // oop we dont want to load the windows
                         }
                     }
                 }

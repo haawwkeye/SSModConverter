@@ -28,7 +28,23 @@ namespace ModMapConverter
 
 		public void Convert(object sender, MouseEventArgs e)
 		{
+			bool fakeCursor = false;
+			bool osuNotes = false;
+			double.TryParse(SongLength.Text, out double songLength);
+
+			if (Running)
+            {
+				MessageBox.Show("Already running", "Error");
+				return;
+            }
+			else
+            {
+				fakeCursor = FakeCursor.Checked;
+				osuNotes = OsuNote.Checked;
+			}
+
 			Running = true;
+
 			string[] array;
 			string text = input.Text;
 			if (text.Length == 0)
@@ -125,12 +141,47 @@ namespace ModMapConverter
 							},
 							{
 								"animation",
-								new JsonArray(Array.Empty<JsonValue>())
+								(osuNotes & new JsonArray(new JsonValue[]) || new JsonArray(Array.Empty<JsonValue>()))
 							}
 						});
+
+						if (osuNotes)
+                        {
+							
+                        }
 					}
 				}
 				jsonObject.Add("objects", jsonArray);
+
+				if (fakeCursor || osuNotes)
+				{
+					JsonArray evntJsonArray = new JsonArray(Array.Empty<JsonValue>());
+
+					if (fakeCursor)
+					{
+						if (songLength != null)
+						{
+							evntJsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+							{
+
+							});
+						}
+						else
+						{
+							MessageBox.Show("Please put the songs length in the textbox at the buttom of the 'Extra' panel", "Error");
+						}
+					}
+
+					if (osuNotes)
+					{
+						evntJsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+						{
+
+						});
+					}
+
+					//jsonObject.Add("objects", evntJsonArray);
+				}
 				jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 				jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
 				Running = false;
@@ -145,9 +196,11 @@ namespace ModMapConverter
 		}
 
 		private void Settings_Click(object sender, EventArgs e)
-        {
+		{
 			if (Running)
+			{
 				return;
+			}
 
 			if (!runningSettings)
 			{
