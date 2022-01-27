@@ -46,6 +46,7 @@ namespace ModMapConverter
             this.songAR = new System.Windows.Forms.TextBox();
             this.OsuNote = new System.Windows.Forms.CheckBox();
             this.FakeCursor = new System.Windows.Forms.CheckBox();
+            this.osuAR = new System.Windows.Forms.TextBox();
             this.ExtraPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,6 +132,7 @@ namespace ModMapConverter
             // 
             this.ExtraPanel.BackColor = System.Drawing.SystemColors.Window;
             this.ExtraPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ExtraPanel.Controls.Add(this.osuAR);
             this.ExtraPanel.Controls.Add(this.BSSongId);
             this.ExtraPanel.Controls.Add(this.convertType);
             this.ExtraPanel.Controls.Add(this.songAR);
@@ -177,6 +179,7 @@ namespace ModMapConverter
             this.OsuNote.TabIndex = 1;
             this.OsuNote.Text = "osu! Notes";
             this.OsuNote.UseVisualStyleBackColor = true;
+            this.OsuNote.CheckedChanged += new System.EventHandler(this.OsuNote_CheckedChanged);
             // 
             // FakeCursor
             // 
@@ -188,6 +191,15 @@ namespace ModMapConverter
             this.FakeCursor.TabIndex = 0;
             this.FakeCursor.Text = "Fake Cursor";
             this.FakeCursor.UseVisualStyleBackColor = true;
+            // 
+            // osuAR
+            // 
+            this.osuAR.Location = new System.Drawing.Point(-2, 132);
+            this.osuAR.Name = "osuAR";
+            this.osuAR.Size = new System.Drawing.Size(89, 20);
+            this.osuAR.TabIndex = 13;
+            this.osuAR.Text = "Enter osu AR";
+            this.osuAR.Visible = false;
             // 
             // MainWindow
             // 
@@ -235,5 +247,6 @@ namespace ModMapConverter
         private TextBox songAR;
         private Button convertType;
         private TextBox BSSongId;
+        private TextBox osuAR;
     }
 }
