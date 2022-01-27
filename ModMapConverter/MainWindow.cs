@@ -136,15 +136,18 @@ namespace ModMapConverter
 
 			if (isConvertingMap)
             {
-				new Exception("Already running");
+				MessageBox.Show("Already running", "Error");
+				return;
             }
 			else if (type == "SSJ")
             {
-				new Exception("Sound Space JSON files not supported yet.");
+				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
+				return;
             }
 			else if (type == "BS")
 			{
-				new Exception("Beat Saber JSON files not supported yet.");
+				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+				return;
 			}
 			else
 			{
