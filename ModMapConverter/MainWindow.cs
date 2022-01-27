@@ -83,46 +83,87 @@ namespace ModMapConverter
 			isConvertingType = false;
 		}
 
-		public void arRemoveText(object sender, EventArgs e)
+		private void OsuNote_CheckedChanged(object sender, EventArgs e)
+		{
+			if (isConvertingMap)
+				return;
+
+			string type = convertType.Text.Substring(9);
+
+			if (type == "BS")
+			{
+				osuAR.Location = new Point(-2, 112);
+			}
+			else
+			{
+				osuAR.Location = new Point(-2, 132);
+			}
+
+			osuAR.Visible = OsuNote.Checked;
+		}
+
+		private void arRemoveText(object sender, EventArgs e)
 		{
 			if (songAR.Text == "Enter AR")
 				songAR.Text = "";
 		}
 
-		public void osuarAddText(object sender, EventArgs e)
+		private void osuarAddText(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(osuAR.Text))
 				osuAR.Text = "Enter osu AR";
 		}
 
-		public void osuarRemoveText(object sender, EventArgs e)
+		private void osuarRemoveText(object sender, EventArgs e)
 		{
 			if (osuAR.Text == "Enter osu AR")
 				osuAR.Text = "";
 		}
 
-		public void arAddText(object sender, EventArgs e)
+		private void arAddText(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(songAR.Text))
 				songAR.Text = "Enter AR";
 		}
 
-		public void bsRemoveText(object sender, EventArgs e)
+		private void bsRemoveText(object sender, EventArgs e)
 		{
 			if (BSSongId.Text == "Enter BS SongId")
 				BSSongId.Text = "";
 		}
 
-		public void bsAddText(object sender, EventArgs e)
+		private void bsAddText(object sender, EventArgs e)
 		{
 			if (string.IsNullOrWhiteSpace(BSSongId.Text))
 				BSSongId.Text = "Enter BS SongId";
 		}
 
-		public void Convert(object sender, MouseEventArgs e)
+		private void Settings_Click(object sender, EventArgs e)
+		{
+			if (isConvertingMap)
+			{
+				return;
+			}
+
+			if (!runningSettings)
+			{
+				runningSettings = true;
+				Hide();
+				settingsWindow.LoadSettings();
+				settingsWindow.mainWindow = this; // just in case
+				settingsWindow.Show();
+			}
+			else
+			{
+				MessageBox.Show("Settings already running...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+		}
+
+		private void Convert(object sender, MouseEventArgs e)
 		{
 			bool fakeCursor = FakeCursor.Checked;
 			bool osuNotes = OsuNote.Checked;
+
 			bool sar = double.TryParse(songAR.Text, out double songar);
 			bool oar = double.TryParse(osuAR.Text, out double osuNoteAR);
 
@@ -134,34 +175,29 @@ namespace ModMapConverter
 			double offset = 0;
 			string type = convertType.Text.Substring(9);
 
-			if (isConvertingMap)
-            {
-				MessageBox.Show("Already running", "Error");
-				return;
-            }
-			else if (type == "SSJ")
-            {
-				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
-				return;
-            }
-			else if (type == "BS")
+			string[] array;
+			string text = input.Text;
+			if (text.Length == 0)
 			{
-				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+				MessageBox.Show("You cannot convert a nonexistent map.", "bruh");
 				return;
 			}
 			else
 			{
-				string[] array;
-				string text = input.Text;
-				if (text.Length == 0)
+				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw"))
 				{
-					MessageBox.Show("You cannot convert a nonexistent map.", "bruh");
-					return;
+					string txt = httpHandler.HttpGet(text);
+					if (txt == "Error")
+					{
+						return;
+					}
+					text = txt;
 				}
-				else
+				else if (text.StartsWith("https://") || text.StartsWith("https://"))
 				{
-					isConvertingMap = true;
-					if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw"))
+					var dialogResult = MessageBox.Show("Are you sure you want to send a WebRequest to '" + text + "'", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+					
+					if (dialogResult == DialogResult.Yes)
 					{
 						string txt = httpHandler.HttpGet(text);
 						if (txt == "Error")
@@ -170,29 +206,39 @@ namespace ModMapConverter
 						}
 						text = txt;
 					}
-					else if (text.StartsWith("https://") || text.StartsWith("https://"))
+					else
 					{
-						var dialogResult = MessageBox.Show("Are you sure you want to send a WebRequest to '" + text + "'", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-						if (dialogResult == DialogResult.Yes)
-						{
-							string txt = httpHandler.HttpGet(text);
-							if (txt == "Error")
-							{
-								return;
-							}
-							text = txt;
-						}
-						else
-						{
-							return;
-						}
+						return;
 					}
 				}
+			}
 
-				JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
+			isConvertingMap = true;
 
-				array = text.Split(new char[]{','});
+			JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
+
+			if (isConvertingMap)
+            {
+				MessageBox.Show("Already running", "Error");
+				return;
+            }
+			else if (type == "SSJ")
+            {
+				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
+				jsonObject = null;
+				isConvertingMap = false;
+				return;
+            }
+			else if (type == "BS")
+			{
+				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+				jsonObject = null;
+				isConvertingMap = false;
+				return;
+			}
+			else
+			{
+				array = text.Split(new char[] { ',' });
 
 				double AR = 70;
 
@@ -202,17 +248,16 @@ namespace ModMapConverter
 				}
 
 				jsonObject.Add("audio", "rbxassetid://" + array[0]);
-
 				jsonObject.Add("noteDistance", AR);
-
-
 				jsonObject.Add("colors", new JsonArray(new JsonValue[]
 				{
 					new JsonArray(new JsonValue[]{255, 0, 0}),
 					new JsonArray(new JsonValue[]{0, 255, 255})
 				}));
+
 				JsonArray jsonArray = new JsonArray(Array.Empty<JsonValue>());
 				string[] array2 = array;
+
 				/**/
 				try
 				{
@@ -393,12 +438,11 @@ namespace ModMapConverter
 						jsonArray[cursor]["animation"] = cursorAnimation;
 					}
 
-					Console.WriteLine(jsonArray.Count);
+					//Console.WriteLine(jsonArray.Count);
 
 					jsonObject.Add("objects", jsonArray);
 					jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 					jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
-					isConvertingMap = false;
 				/**/
 				}
 				catch (Exception ex)
@@ -409,43 +453,10 @@ namespace ModMapConverter
 				}
 				/**/
 				output.Text = jsonObject.ToString();
-			}
-		}
-
-		private void Settings_Click(object sender, EventArgs e)
-		{
-			if (isConvertingMap)
-			{
+				jsonObject = null;
+				isConvertingMap = false;
 				return;
 			}
-
-			if (!runningSettings)
-			{
-				runningSettings = true;
-				Hide();
-				settingsWindow.LoadSettings();
-				settingsWindow.mainWindow = this; // just in case
-				settingsWindow.Show();
-			}
-			else
-			{
-				MessageBox.Show("Settings already running...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-		}
-
-        private void OsuNote_CheckedChanged(object sender, EventArgs e)
-        {
-			string type = convertType.Text.Substring(9);
-			if (type == "BS")
-			{
-				osuAR.Location = new Point(-2, 112);
-			}
-			else
-            {
-				osuAR.Location = new Point(-2, 132);
-			}
-
-			osuAR.Visible = OsuNote.Checked;
 		}
     }
 }
