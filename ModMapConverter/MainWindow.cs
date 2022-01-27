@@ -53,7 +53,6 @@ namespace ModMapConverter
 			{
 				convertType.Text = "Convert: BS";
 				BSSongId.Visible = true;
-				type = "BS";
 
 				if (OsuNote.Checked)
 				{
@@ -64,7 +63,6 @@ namespace ModMapConverter
 			{
 				convertType.Text = "Convert: SSJ";
 				BSSongId.Visible = false;
-				type = "SSJ";
 
 				if (OsuNote.Checked)
 				{
@@ -75,7 +73,6 @@ namespace ModMapConverter
 			{
 				convertType.Text = "Convert: SS";
 				BSSongId.Visible = false;
-				type = "SS";
 
 				if (OsuNote.Checked)
 				{
@@ -139,18 +136,15 @@ namespace ModMapConverter
 
 			if (isConvertingMap)
             {
-				MessageBox.Show("Already running", "Error");
-				return;
+				new Exception("Already running");
             }
 			else if (type == "SSJ")
             {
-				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
-				return;
+				new Exception("Sound Space JSON files not supported yet.");
             }
 			else if (type == "BS")
 			{
-				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
-				return;
+				new Exception("Beat Saber JSON files not supported yet.");
 			}
 			else
 			{
