@@ -10,13 +10,11 @@ using System.Windows.Forms;
 
 namespace ModMapConverter
 {
-    public partial class SettingsWindow : Form
+    public partial class ColorsWindow : Form
     {
-        public MainWindow mainWindow { get; internal set; }
-        public ColorsWindow colorsWindow { get; internal set; } = new ColorsWindow();
-        public bool runningColors { get; internal set; }
+        public SettingsWindow settingsWindow { get; internal set; }
 
-        public SettingsWindow()
+        public ColorsWindow()
         {
             InitializeComponent();
             FormClosing += Settings_FormClosing; // Event for when the form starts to close
@@ -26,28 +24,18 @@ namespace ModMapConverter
         {
             var manager = Properties.Resources.ResourceManager;
             var settings = Properties.Settings.Default;
-
-            Notes_change_fog_text.Text = manager.GetString("Notes_change_fog");
-            Notes_change_fog.Checked = settings.Notes_change_fog;
         }
 
         private void Close_Click(object sender, EventArgs e)
         {
             Hide();
-            mainWindow.Show();
-            mainWindow.runningSettings = false; // set to false since the settings are done
+            settingsWindow.runningColors = false; // set to false since the settings are done
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
             bool settingsChanged = false;
             //Properties.Settings.Default.Upgrade(); // update in case there is any missing settings
-
-            if (Properties.Settings.Default.Notes_change_fog != Notes_change_fog.Checked)
-            {
-                settingsChanged = true;
-                Properties.Settings.Default.Notes_change_fog = Notes_change_fog.Checked; // set to new setting
-            }
 
             if (settingsChanged == true)
             {
@@ -62,9 +50,8 @@ namespace ModMapConverter
 
         private void Settings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            mainWindow.Show(); // Show the MainWindow
-            mainWindow.settingsWindow = new SettingsWindow(); // since the form is closing we need to provide a new form for settings
-            mainWindow.runningSettings = false; // set to false since the settings are done
+            settingsWindow.colorsWindow = new ColorsWindow(); // since the form is closing we need to provide a new form for settings
+            settingsWindow.runningColors = false; // set to false since the settings are done
         }
     }
 }
