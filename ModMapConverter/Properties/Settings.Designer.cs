@@ -43,5 +43,14 @@ namespace ModMapConverter.Properties {
                 return ((float)(this["Version"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.1")]
+        public float JSONVersion {
+            get {
+                return ((float)(this["JSONVersion"]));
+            }
+        }
     }
 }

@@ -247,6 +247,7 @@ namespace ModMapConverter
 					AR = songar;
 				}
 
+				jsonObject.Add("_version", Properties.Settings.Default.JSONVersion.ToString());
 				jsonObject.Add("audio", "rbxassetid://" + array[0]);
 				jsonObject.Add("noteDistance", AR);
 				jsonObject.Add("colors", new JsonArray(new JsonValue[]
@@ -273,6 +274,7 @@ namespace ModMapConverter
 						{
 							jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 							{
+								{"extraDataType", "null"},
 								{"type", 0},
 								{"time", int.Parse(array3[2]) / 1000.0},
 								{"length", 1},
@@ -308,6 +310,7 @@ namespace ModMapConverter
 
 								jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 								{
+									{"extraDataType", "osuNotes"},
 									{"type", 1},
 									{"time", obj["time"] - 0.8},
 									{"length", 0.8},
@@ -348,6 +351,7 @@ namespace ModMapConverter
 					{
 						jsonArray.Add(new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 						{
+							{"extraDataType", "fakeCursor"},
 							{"type", 1},
 							{"time", 0},
 							{"length", 0},
@@ -439,11 +443,22 @@ namespace ModMapConverter
 					}
 
 					//Console.WriteLine(jsonArray.Count);
-
 					jsonObject.Add("objects", jsonArray);
 					jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 					jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
-				/**/
+					jsonObject.Add("extraData", new JsonArray(Array.Empty<JsonValue>())
+					{
+						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+						{
+							{ "osuNotes", osuNotes }
+						},
+						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+						{
+							{ "fakeCursor", fakeCursor }
+						}
+					});
+
+					/**/
 				}
 				catch (Exception ex)
 				{
