@@ -90,9 +90,11 @@ namespace ModMapConverter
             // 
             // output
             // 
+            this.output.BackColor = System.Drawing.SystemColors.Window;
             this.output.Location = new System.Drawing.Point(136, 91);
             this.output.Multiline = true;
             this.output.Name = "output";
+            this.output.ReadOnly = true;
             this.output.Size = new System.Drawing.Size(116, 113);
             this.output.TabIndex = 5;
             // 
