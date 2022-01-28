@@ -117,7 +117,7 @@ namespace ModMapConverter
 
             if (Directory.Exists(path + "\\songs"))
             {
-                Directory.Delete(path + "\\songs");
+                Directory.Delete(path + "\\songs", true);
             }
         }
 
