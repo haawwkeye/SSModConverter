@@ -184,7 +184,7 @@ namespace ModMapConverter
 			}
 			else
 			{
-				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw"))
+				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw") || text.StartsWith("http://raw.githubusercontent.com") || text.StartsWith("http://gist.githubusercontent.com") || text.StartsWith("http://pastebin.com/raw"))
 				{
 					string txt = httpHandler.HttpGet(text);
 					if (txt == "Error")
@@ -193,7 +193,7 @@ namespace ModMapConverter
 					}
 					text = txt;
 				}
-				else if (text.StartsWith("https://") || text.StartsWith("https://"))
+				else if (text.StartsWith("https://") || text.StartsWith("http://"))
 				{
 					var dialogResult = MessageBox.Show("Are you sure you want to send a WebRequest to '" + text + "'", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 					
