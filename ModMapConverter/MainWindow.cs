@@ -184,7 +184,45 @@ namespace ModMapConverter
 			}
 			else
 			{
-				if (text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw") || text.StartsWith("http://raw.githubusercontent.com") || text.StartsWith("http://gist.githubusercontent.com") || text.StartsWith("http://pastebin.com/raw"))
+				string key = "";
+
+				if (type == "BS" && text.StartsWith("https://bsaber.com/songs/") || text.StartsWith("http://bsaber.com/songs/"))
+                {
+					key = text.Substring(24);
+
+					if (key.StartsWith("/"))
+						key = text.Substring(25);
+
+					Console.WriteLine(text + "||" + key);
+
+					string txt = "Error";//httpHandler.HttpGet("https://api.beatsaver.com/download/key/" + key);
+
+					if (txt == "Error")
+					{
+						return;
+					}
+					text = txt;
+				}
+				else if (type == "BS" && text.StartsWith("https://beatsaver.com/maps/") || text.StartsWith("http://beatsaver.com/maps/"))
+				{
+					key = text.Substring(26);
+
+					if (key.StartsWith("/"))
+						key = text.Substring(27);
+
+					Console.WriteLine(text + "||" + key);
+
+					string txt = "Error";//httpHandler.HttpGet("https://api.beatsaver.com/download/key/" + key);
+
+					if (txt == "Error")
+					{
+						return;
+					}
+					text = txt;
+
+				}
+
+				if (key == "" && text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw") || text.StartsWith("http://raw.githubusercontent.com") || text.StartsWith("http://gist.githubusercontent.com") || text.StartsWith("http://pastebin.com/raw"))
 				{
 					string txt = httpHandler.HttpGet(text);
 					if (txt == "Error")
@@ -193,8 +231,31 @@ namespace ModMapConverter
 					}
 					text = txt;
 				}
-				else if (text.StartsWith("https://") || text.StartsWith("http://"))
+				else if (key == "" && text.StartsWith("https://") || text.StartsWith("http://"))
 				{
+					if (text.StartsWith("https://bsaber.com") || text.StartsWith("http://bsaber.com") || text.StartsWith("https://beatsaver.com") || text.StartsWith("http://beatsaver.com"))
+                    {
+						var convertResult = MessageBox.Show("Would you like to switch from " + type + " to " + "BS" , "Warning", MessageBoxButtons.YesNo);
+
+						if (convertResult == DialogResult.Yes)
+						{
+							convertType.Text = "Convert: BS";
+							BSSongId.Visible = true;
+
+							if (OsuNote.Checked)
+							{
+								OsuNote_CheckedChanged(sender, e);
+							}
+
+							var shouldStart = MessageBox.Show("Would you like to start converting now?", "Warning", MessageBoxButtons.YesNo);
+							if (shouldStart == DialogResult.Yes)
+							{
+								Convert(sender, e);
+							}
+
+						return;
+                    }
+
 					var dialogResult = MessageBox.Show("Are you sure you want to send a WebRequest to '" + text + "'", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 					
 					if (dialogResult == DialogResult.Yes)
@@ -213,8 +274,6 @@ namespace ModMapConverter
 				}
 			}
 
-			isConvertingMap = true;
-
 			JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
 
 			if (isConvertingMap)
@@ -222,15 +281,17 @@ namespace ModMapConverter
 				MessageBox.Show("Already running", "Error");
 				return;
             }
-			else if (type == "SSJ")
+			else if (type == "SSJ" && !isConvertingMap)
             {
+				isConvertingMap = true;
 				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
 				jsonObject = null;
 				isConvertingMap = false;
 				return;
             }
-			else if (type == "BS")
+			else if (type == "BS" && !isConvertingMap)
 			{
+				isConvertingMap = true;
 				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 				jsonObject = null;
 				isConvertingMap = false;
@@ -238,6 +299,7 @@ namespace ModMapConverter
 			}
 			else
 			{
+				isConvertingMap = true;
 				array = text.Split(new char[] { ',' });
 
 				double AR = 70;
