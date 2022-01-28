@@ -177,6 +177,8 @@ namespace ModMapConverter
 
 			string[] array;
 			string text = input.Text;
+			string key = "";
+
 			if (text.Length == 0)
 			{
 				MessageBox.Show("You cannot convert a nonexistent map.", "bruh");
@@ -184,9 +186,22 @@ namespace ModMapConverter
 			}
 			else
 			{
-				string key = "";
+				if (type == "BS" && text.StartsWith("beatsaver://"))
+                {
+					key = text.Substring(12);
 
-				if (type == "BS" && text.StartsWith("https://bsaber.com/songs/") || text.StartsWith("http://bsaber.com/songs/"))
+					Console.WriteLine(text + "||" + key);
+				}
+				else if (type == "BS" && text.StartsWith("https://api.beatsaver.com/download/key/") || text.StartsWith("http://api.beatsaver.com/download/key/"))
+				{
+					key = text.Substring(38);
+
+					if (key.StartsWith("/"))
+						key = text.Substring(39);
+
+					Console.WriteLine(text + "||" + key);
+				}
+				else if (type == "BS" && text.StartsWith("https://bsaber.com/songs/") || text.StartsWith("http://bsaber.com/songs/"))
                 {
 					key = text.Substring(24);
 
@@ -194,14 +209,6 @@ namespace ModMapConverter
 						key = text.Substring(25);
 
 					Console.WriteLine(text + "||" + key);
-
-					string txt = "Error";//httpHandler.HttpGet("https://api.beatsaver.com/download/key/" + key);
-
-					if (txt == "Error")
-					{
-						return;
-					}
-					text = txt;
 				}
 				else if (type == "BS" && text.StartsWith("https://beatsaver.com/maps/") || text.StartsWith("http://beatsaver.com/maps/"))
 				{
@@ -211,29 +218,22 @@ namespace ModMapConverter
 						key = text.Substring(27);
 
 					Console.WriteLine(text + "||" + key);
-
-					string txt = "Error";//httpHandler.HttpGet("https://api.beatsaver.com/download/key/" + key);
-
-					if (txt == "Error")
-					{
-						return;
-					}
-					text = txt;
-
 				}
 
 				if (key == "" && text.StartsWith("https://raw.githubusercontent.com") || text.StartsWith("https://gist.githubusercontent.com") || text.StartsWith("https://pastebin.com/raw") || text.StartsWith("http://raw.githubusercontent.com") || text.StartsWith("http://gist.githubusercontent.com") || text.StartsWith("http://pastebin.com/raw"))
 				{
 					string txt = httpHandler.HttpGet(text);
+
 					if (txt == "Error")
 					{
 						return;
 					}
+
 					text = txt;
 				}
-				else if (key == "" && text.StartsWith("https://") || text.StartsWith("http://"))
+				else if (key == "" && text.StartsWith("https://") || text.StartsWith("http://") || (type != "BS" && text.StartsWith("beatsaver://")))
 				{
-					if (text.StartsWith("https://bsaber.com") || text.StartsWith("http://bsaber.com") || text.StartsWith("https://beatsaver.com") || text.StartsWith("http://beatsaver.com"))
+					if (text.StartsWith("beatsaver://") || text.StartsWith("https://api.beatsaver.com/download/key/") || text.StartsWith("http://api.beatsaver.com/download/key/") || text.StartsWith("https://bsaber.com") || text.StartsWith("http://bsaber.com") || text.StartsWith("https://beatsaver.com") || text.StartsWith("http://beatsaver.com"))
                     {
 						var convertResult = MessageBox.Show("Would you like to switch from " + type + " to " + "BS" , "Warning", MessageBoxButtons.YesNo);
 
@@ -248,10 +248,12 @@ namespace ModMapConverter
 							}
 
 							var shouldStart = MessageBox.Show("Would you like to start converting now?", "Warning", MessageBoxButtons.YesNo);
+
 							if (shouldStart == DialogResult.Yes)
 							{
 								Convert(sender, e);
 							}
+						}
 
 						return;
                     }
@@ -261,10 +263,12 @@ namespace ModMapConverter
 					if (dialogResult == DialogResult.Yes)
 					{
 						string txt = httpHandler.HttpGet(text);
+
 						if (txt == "Error")
 						{
 							return;
 						}
+
 						text = txt;
 					}
 					else
@@ -285,7 +289,6 @@ namespace ModMapConverter
             {
 				isConvertingMap = true;
 				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
-				jsonObject = null;
 				isConvertingMap = false;
 				return;
             }
@@ -293,7 +296,13 @@ namespace ModMapConverter
 			{
 				isConvertingMap = true;
 				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
-				jsonObject = null;
+
+				if (key != "")
+				{
+					string link = "https://api.beatsaver.com/download/key/" + key;
+					DownloadHandler.BSHandler.StartDownload(link, key);
+				}
+
 				isConvertingMap = false;
 				return;
 			}
@@ -530,7 +539,6 @@ namespace ModMapConverter
 				}
 				/**/
 				output.Text = jsonObject.ToString();
-				jsonObject = null;
 				isConvertingMap = false;
 				return;
 			}

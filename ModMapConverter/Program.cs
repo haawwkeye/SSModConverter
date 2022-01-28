@@ -79,7 +79,7 @@ namespace ModMapConverter
                         if (result == DialogResult.Yes)
                         {
                             var downloadLink = "https://github.com/haawwkeye/SSModConverter/releases/download/" + tag + "/ModMapConverter.zip";
-                            DownloadHandler.Handler.StartDownload(downloadLink);
+                            DownloadHandler.UpdateHandler.StartDownload(downloadLink);
                             return; // oop we dont want to load the windows
                         }
                     }
@@ -106,7 +106,19 @@ namespace ModMapConverter
             mainWindow.settingsWindow = settingsWindow;
             settingsWindow.mainWindow = mainWindow;
 
+            Application.ApplicationExit += Application_ApplicationExit;
+
             Application.Run(mainWindow);
+        }
+
+        private static void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            string path = Directory.GetCurrentDirectory(); // delete songs on close to save space
+
+            if (Directory.Exists(path + "\\songs"))
+            {
+                Directory.Delete(path + "\\songs");
+            }
         }
 
         private static void PropSettings_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
@@ -129,7 +141,7 @@ namespace ModMapConverter
 
 namespace DownloadHandler
 {
-    class Handler
+    class UpdateHandler
     {
         public static string path { get; private set; } = Directory.GetCurrentDirectory();
         private readonly static WebClient wc = new WebClient();
@@ -185,6 +197,72 @@ namespace DownloadHandler
             {
                 Process.Start(path + "\\finishUpdate.bat");
                 Application.Exit();
+            }
+        }
+    }
+
+    class BSHandler
+    {
+        public static string name { get; private set; } = "";
+        public static string path { get; private set; } = Directory.GetCurrentDirectory();
+        private readonly static WebClient wc = new WebClient();
+
+        public static void StartDownload(string url, string key)
+        {
+            if (name != "")
+            {
+                return;
+            }
+
+            name = key;
+            DownloadFileInBackground(new Uri(url), key);
+        }
+
+        static void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Console.Write("\rDownloading {0} % complete...", e.ProgressPercentage);
+        }
+
+        static void DownloadFileInBackground(Uri address, string v)
+        {
+
+            wc.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
+            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
+
+            wc.DownloadFileAsync(address, v + ".zip");
+        }
+        static void DownloadFileCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            Console.Write("\n");
+            Console.WriteLine("downloaded, extracting\n");
+
+            string file = name + ".zip";
+
+            if (!Directory.Exists(path + "\\songs"))
+            {
+                Directory.CreateDirectory(path + "\\songs");
+            }
+
+            if (!Directory.Exists(path + "\\songs\\" + name))
+            {
+                Directory.CreateDirectory(path + "\\songs\\" + name);
+            }
+            else
+            {
+                Directory.Delete(path + "\\songs\\" + name);
+                Directory.CreateDirectory(path + "\\songs\\" + name);
+            }
+
+            ZipFile.ExtractToDirectory(file, path + "\\songs\\" + name);
+
+            File.Delete(file);
+
+            name = "";
+
+            if (e.Error != null)
+            {
+                Console.WriteLine(e.Error.ToString());
+                MessageBox.Show(e.Error.ToString(), "Error");
             }
         }
     }
