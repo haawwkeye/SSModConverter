@@ -300,7 +300,15 @@ namespace ModMapConverter
 				if (key != "")
 				{
 					string link = "https://api.beatsaver.com/download/key/" + key;
-					DownloadHandler.BSHandler.StartDownload(link, key);
+					
+					var download = DownloadHandler.BSHandler.StartDownload(link, key);
+
+					string downloadpath = download;
+
+					if (downloadpath != "")
+                    {
+						Console.WriteLine(downloadpath + ", " + File.ReadAllText(downloadpath + "\\info.dat"));
+                    }
 				}
 
 				isConvertingMap = false;

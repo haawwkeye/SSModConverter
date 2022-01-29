@@ -2,7 +2,7 @@
 using System.Net;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
@@ -10,7 +10,8 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Compression;
-using System.Threading;
+using Generator3;
+using System.Collections;
 
 namespace ModMapConverter
 {
@@ -109,6 +110,8 @@ namespace ModMapConverter
             Application.ApplicationExit += Application_ApplicationExit;
 
             Application.Run(mainWindow);
+
+            CoroutineHandler.StartUpdate();
         }
 
         private static void Application_ApplicationExit(object sender, EventArgs e)
@@ -207,15 +210,32 @@ namespace DownloadHandler
         public static string path { get; private set; } = Directory.GetCurrentDirectory();
         private readonly static WebClient wc = new WebClient();
 
-        public static void StartDownload(string url, string key)
+        static IEnumerator Init(string key)
+        {
+            bool exists = Directory.Exists(path + "\\songs\\" + key);
+
+            while (!exists)
+            {
+                yield return Sched.Instance.StartCoroutine(Sched.WaitAboutSeconds(1));
+            }
+
+            yield break;
+        }
+
+        public static string StartDownload(string url, string key)
         {
             if (name != "")
             {
-                return;
+                return "Already running";
             }
 
             name = key;
+
             DownloadFileInBackground(new Uri(url), key);
+
+            Sched.Coroutine coroutine = Sched.Instance.StartCoroutine(Init(key));
+
+            return path + "\\songs\\" + key;
         }
 
         static void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
@@ -225,7 +245,6 @@ namespace DownloadHandler
 
         static void DownloadFileInBackground(Uri address, string v)
         {
-
             wc.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
             wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadProgressCallback);
 

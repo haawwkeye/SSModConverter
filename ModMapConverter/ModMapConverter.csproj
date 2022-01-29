@@ -89,6 +89,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoroutineHandlerBase.cs" />
+    <Compile Include="Sched.cs" />
     <Compile Include="InternetCheckApp.cs" />
     <Compile Include="ColorsWindow.cs">
       <SubType>Form</SubType>
