@@ -447,15 +447,16 @@ namespace ModMapConverter
 				/**/
 					isConvertingMap = true;
 					//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+					//string info = "";
 
 					if (key != "")
 					{
 						string link = "https://api.beatsaver.com/download/key/" + key;
 					
 						DownloadHandler.BSHandler.StartDownload(link, key);
-
-						//string downloadpath = DownloadHandler.BSHandler.path + "\\songs\\" + key;
 					}
+
+					
 				/**/
 				}
 				catch (Exception ex)
