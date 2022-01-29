@@ -210,32 +210,16 @@ namespace DownloadHandler
         public static string path { get; private set; } = Directory.GetCurrentDirectory();
         private readonly static WebClient wc = new WebClient();
 
-        static IEnumerator Init(string key)
-        {
-            bool exists = Directory.Exists(path + "\\songs\\" + key);
-
-            while (!exists)
-            {
-                yield return Sched.Instance.StartCoroutine(Sched.WaitAboutSeconds(1));
-            }
-
-            yield break;
-        }
-
-        public static string StartDownload(string url, string key)
+        public static void StartDownload(string url, string key)
         {
             if (name != "")
             {
-                return "Already running";
+                return;
             }
 
             name = key;
 
             DownloadFileInBackground(new Uri(url), key);
-
-            Sched.Coroutine coroutine = Sched.Instance.StartCoroutine(Init(key));
-
-            return path + "\\songs\\" + key;
         }
 
         static void DownloadProgressCallback(object sender, DownloadProgressChangedEventArgs e)
@@ -268,13 +252,15 @@ namespace DownloadHandler
             }
             else
             {
-                Directory.Delete(path + "\\songs\\" + name);
+                Directory.Delete(path + "\\songs\\" + name, true);
                 Directory.CreateDirectory(path + "\\songs\\" + name);
             }
 
             ZipFile.ExtractToDirectory(file, path + "\\songs\\" + name);
 
             File.Delete(file);
+
+            Console.WriteLine(File.ReadAllText(path + "\\songs\\" + name + "\\info.dat"));
 
             name = "";
 

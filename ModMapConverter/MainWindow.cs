@@ -8,6 +8,7 @@ using System.Json;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -288,6 +289,7 @@ namespace ModMapConverter
 			else if (type == "SSJ" && !isConvertingMap)
             {
 				isConvertingMap = true;
+
 				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
 				isConvertingMap = false;
 				return;
@@ -295,20 +297,15 @@ namespace ModMapConverter
 			else if (type == "BS" && !isConvertingMap)
 			{
 				isConvertingMap = true;
-				MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+				//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 
 				if (key != "")
 				{
 					string link = "https://api.beatsaver.com/download/key/" + key;
 					
-					var download = DownloadHandler.BSHandler.StartDownload(link, key);
+					DownloadHandler.BSHandler.StartDownload(link, key);
 
-					string downloadpath = download;
-
-					if (downloadpath != "")
-                    {
-						Console.WriteLine(downloadpath + ", " + File.ReadAllText(downloadpath + "\\info.dat"));
-                    }
+					//string downloadpath = DownloadHandler.BSHandler.path + "\\songs\\" + key;
 				}
 
 				isConvertingMap = false;
