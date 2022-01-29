@@ -290,6 +290,36 @@ namespace ModMapConverter
             {
 				isConvertingMap = true;
 
+				JsonValue currentMap = JsonValue.Parse(text);
+
+				if (currentMap)
+                {
+					var currentVersion = "1";
+					var currentlyHasOsuNotes = false;
+					var currentlyHasFakeCursor = false;
+
+					if (currentMap["_version"])
+						currentVersion = currentMap["_version"];
+
+					if (currentMap["extraData"] && currentMap["extraData"]["osuNotes"])
+						currentlyHasOsuNotes = currentMap["extraData"]["osuNotes"];
+
+					if (currentMap["extraData"] && currentMap["extraData"]["fakeCursor"])
+						currentlyHasFakeCursor = currentMap["extraData"]["fakeCursor"];
+
+					Console.WriteLine(currentVersion + ", " + currentlyHasOsuNotes.ToString() + ", " + currentlyHasFakeCursor.ToString());
+
+					if (currentlyHasOsuNotes)
+                    {
+
+                    }
+
+					if (currentlyHasFakeCursor)
+                    {
+
+                    }
+				}
+
 				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
 				isConvertingMap = false;
 				return;

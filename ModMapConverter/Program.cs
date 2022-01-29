@@ -10,7 +10,6 @@ using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO.Compression;
-using Generator3;
 using System.Collections;
 
 namespace ModMapConverter
@@ -110,8 +109,6 @@ namespace ModMapConverter
             Application.ApplicationExit += Application_ApplicationExit;
 
             Application.Run(mainWindow);
-
-            CoroutineHandler.StartUpdate();
         }
 
         private static void Application_ApplicationExit(object sender, EventArgs e)
