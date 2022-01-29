@@ -27,3 +27,4 @@ H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.pdb
 H:\SSModConverter\ModMapConverter\bin\Debug\Newtonsoft.Json.dll
 H:\SSModConverter\ModMapConverter\bin\Debug\Newtonsoft.Json.xml
 H:\SSModConverter\ModMapConverter\obj\Debug\ModMapConverter.ColorsWindow.resources
+H:\SSModConverter\ModMapConverter\bin\Debug\System.Json.xml

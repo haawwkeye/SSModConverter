@@ -180,6 +180,13 @@ namespace ModMapConverter
 			string text = input.Text;
 			string key = "";
 
+			double AR = 70;
+
+			if (sar)
+			{
+				AR = songar;
+			}
+
 			if (text.Length == 0)
 			{
 				MessageBox.Show("You cannot convert a nonexistent map.", "bruh");
@@ -254,9 +261,9 @@ namespace ModMapConverter
 							{
 								Convert(sender, e);
 							}
-						}
 
-						return;
+							return;
+						}
                     }
 
 					var dialogResult = MessageBox.Show("Are you sure you want to send a WebRequest to '" + text + "'", "WARNING", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -277,6 +284,31 @@ namespace ModMapConverter
 						return;
 					}
 				}
+			
+				if (type == "SS" && text.StartsWith("{"))
+                {
+					var convertResult = MessageBox.Show("Would you like to switch from " + type + " to " + "SSJ", "Warning", MessageBoxButtons.YesNo);
+
+					if (convertResult == DialogResult.Yes)
+					{
+						convertType.Text = "Convert: SSJ";
+						BSSongId.Visible = false;
+
+						if (OsuNote.Checked)
+						{
+							OsuNote_CheckedChanged(sender, e);
+						}
+
+						var shouldStart = MessageBox.Show("Would you like to start converting now?", "Warning", MessageBoxButtons.YesNo);
+
+						if (shouldStart == DialogResult.Yes)
+						{
+							Convert(sender, e);
+						}
+						
+						return;
+					}
+				}
 			}
 
 			JsonObject jsonObject = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>());
@@ -288,87 +320,175 @@ namespace ModMapConverter
             }
 			else if (type == "SSJ" && !isConvertingMap)
             {
-				isConvertingMap = true;
+				/**/
+				try
+				{
+				/**/
+					isConvertingMap = true;
+					//MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
+					string path = DownloadHandler.BSHandler.path + "\\map.json";
 
-				JsonValue currentMap = JsonValue.Parse(text);
+					File.WriteAllText(path, text);
 
-				if (currentMap)
-                {
-					var currentVersion = "1";
-					var currentlyHasOsuNotes = false;
-					var currentlyHasFakeCursor = false;
+					JsonValue currentMap = null;
 
-					if (currentMap["_version"])
-						currentVersion = currentMap["_version"];
-
-					if (currentMap["extraData"] && currentMap["extraData"]["osuNotes"])
-						currentlyHasOsuNotes = currentMap["extraData"]["osuNotes"];
-
-					if (currentMap["extraData"] && currentMap["extraData"]["fakeCursor"])
-						currentlyHasFakeCursor = currentMap["extraData"]["fakeCursor"];
-
-					Console.WriteLine(currentVersion + ", " + currentlyHasOsuNotes.ToString() + ", " + currentlyHasFakeCursor.ToString());
-
-					if (currentlyHasOsuNotes)
+					if (File.Exists(path))
                     {
+						try
+						{
+							currentMap = JsonValue.Parse(File.ReadAllText(path));
+						}
+						catch (Exception ex)
+                        {
+							MessageBox.Show("Failed to Parse map...\n" + ex.Message, "Error");
+                        }
 
-                    }
+						File.Delete(path); // no longer need this so delete it
+					}
 
-					if (currentlyHasFakeCursor)
-                    {
+					JsonObject defaults = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+					{
+						{ "_version", Properties.Settings.Default.JSONVersion.ToString() },
+						{ "audio", "rbxassetid://" },
+						{ "noteDistance", AR },
+						{
+							"colors",
+							new JsonArray(new JsonValue[]
+							{
+								new JsonArray(new JsonValue[]{255, 0, 0}),
+								new JsonArray(new JsonValue[]{0, 255, 255})
+							})
+						},
+						{ "objects", new JsonArray(Array.Empty<JsonValue>()) },
+						{ "events", new JsonArray(Array.Empty<JsonValue>()) },
+						{ "tracks", new JsonArray(Array.Empty<JsonValue>()) },
+						{
+							"extraData",
+							new JsonArray(Array.Empty<JsonValue>())
+							{
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+								{
+									{ "osuNotes", !osuNotes }
+								},
+								new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+								{
+									{ "fakeCursor", !fakeCursor }
+								}
+							}
+						}
+					};
 
-                    }
+					if (currentMap != null && currentMap.JsonType == JsonType.Object)
+					{
+						var currentVersion = Properties.Settings.Default.JSONVersion.ToString();
+						var currentlyHasOsuNotes = false;
+						var currentlyHasFakeCursor = false;
+
+						if (currentMap.ContainsKey("_version"))
+						{
+							currentVersion = currentMap["_version"];
+						}
+						else
+						{
+							currentMap["_version"] = currentVersion;
+						}
+
+						if (currentMap.ContainsKey("extraData") && currentMap["extraData"].ContainsKey("osuNotes"))
+						{
+							currentlyHasOsuNotes = currentMap["extraData"]["osuNotes"];
+						}
+
+						if (currentMap.ContainsKey("extraData") && currentMap["extraData"].ContainsKey("fakeCursor"))
+						{
+							currentlyHasFakeCursor = currentMap["extraData"]["fakeCursor"];
+						}
+
+						if (!currentMap.ContainsKey("extraData"))
+						{
+							currentMap["extraData"] = new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
+							{
+								{ "osuNotes", currentlyHasOsuNotes },
+								{ "fakeCursor", currentlyHasFakeCursor }
+							};
+						}
+
+						Console.WriteLine(currentVersion + ", " + currentlyHasOsuNotes.ToString() + ", " + currentlyHasFakeCursor.ToString());
+
+						if (currentlyHasOsuNotes)
+						{
+
+						}
+
+						if (currentlyHasFakeCursor)
+						{
+
+						}
+					}
+
+					output.Text = currentMap.ToString();
+				/**/
 				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					isConvertingMap = false;
+					return;
+				}
+				/**/
 
-				MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
 				isConvertingMap = false;
 				return;
             }
 			else if (type == "BS" && !isConvertingMap)
 			{
-				isConvertingMap = true;
-				//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
-
-				if (key != "")
+				/**/
+				try
 				{
-					string link = "https://api.beatsaver.com/download/key/" + key;
-					
-					DownloadHandler.BSHandler.StartDownload(link, key);
+				/**/
+					isConvertingMap = true;
+					//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 
-					//string downloadpath = DownloadHandler.BSHandler.path + "\\songs\\" + key;
+					if (key != "")
+					{
+						string link = "https://api.beatsaver.com/download/key/" + key;
+					
+						DownloadHandler.BSHandler.StartDownload(link, key);
+
+						//string downloadpath = DownloadHandler.BSHandler.path + "\\songs\\" + key;
+					}
+				/**/
 				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					isConvertingMap = false;
+					return;
+				}
+				/**/
 
 				isConvertingMap = false;
 				return;
 			}
 			else
 			{
-				isConvertingMap = true;
-				array = text.Split(new char[] { ',' });
-
-				double AR = 70;
-
-				if (sar)
-				{
-					AR = songar;
-				}
-
-				jsonObject.Add("_version", Properties.Settings.Default.JSONVersion.ToString());
-				jsonObject.Add("audio", "rbxassetid://" + array[0]);
-				jsonObject.Add("noteDistance", AR);
-				jsonObject.Add("colors", new JsonArray(new JsonValue[]
-				{
-					new JsonArray(new JsonValue[]{255, 0, 0}),
-					new JsonArray(new JsonValue[]{0, 255, 255})
-				}));
-
-				JsonArray jsonArray = new JsonArray(Array.Empty<JsonValue>());
-				string[] array2 = array;
-
 				/**/
 				try
 				{
 				/**/
+					isConvertingMap = true;
+					array = text.Split(new char[] { ',' });
+
+					jsonObject.Add("_version", Properties.Settings.Default.JSONVersion.ToString());
+					jsonObject.Add("audio", "rbxassetid://" + array[0]);
+					jsonObject.Add("noteDistance", AR);
+					jsonObject.Add("colors", new JsonArray(new JsonValue[]
+					{
+						new JsonArray(new JsonValue[]{255, 0, 0}),
+						new JsonArray(new JsonValue[]{0, 255, 255})
+					}));
+
+					JsonArray jsonArray = new JsonArray(Array.Empty<JsonValue>());
+					string[] array2 = array;
 
 					for (int i = 0; i < array2.Length; i++)
 					{
@@ -552,19 +672,12 @@ namespace ModMapConverter
 					jsonObject.Add("objects", jsonArray);
 					jsonObject.Add("events", new JsonArray(Array.Empty<JsonValue>()));
 					jsonObject.Add("tracks", new JsonArray(Array.Empty<JsonValue>()));
-					jsonObject.Add("extraData", new JsonArray(Array.Empty<JsonValue>())
+					jsonObject.Add("extraData", new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
 					{
-						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
-						{
-							{ "osuNotes", osuNotes }
-						},
-						new JsonObject(Array.Empty<KeyValuePair<string, JsonValue>>())
-						{
-							{ "fakeCursor", fakeCursor }
-						}
+						{ "osuNotes", osuNotes },
+						{ "fakeCursor", fakeCursor }
 					});
-
-					/**/
+				/**/
 				}
 				catch (Exception ex)
 				{
