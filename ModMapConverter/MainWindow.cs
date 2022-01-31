@@ -446,7 +446,7 @@ namespace ModMapConverter
 				{
 				/**/
 					isConvertingMap = true;
-					MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+					//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 					//string info = "";
 
 					if (key != "")
