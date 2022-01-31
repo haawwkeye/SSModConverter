@@ -325,7 +325,7 @@ namespace ModMapConverter
 				{
 				/**/
 					isConvertingMap = true;
-					//MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
+					MessageBox.Show("Sound Space JSON files not supported yet.", "Error");
 					string path = DownloadHandler.BSHandler.path + "\\map.json";
 
 					File.WriteAllText(path, text);
@@ -446,7 +446,7 @@ namespace ModMapConverter
 				{
 				/**/
 					isConvertingMap = true;
-					//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+					MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 					//string info = "";
 
 					if (key != "")
