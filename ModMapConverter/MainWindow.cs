@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using JsonFormat;
 
 namespace ModMapConverter
 {
@@ -687,7 +688,7 @@ namespace ModMapConverter
 					return;
 				}
 				/**/
-				output.Text = jsonObject.ToString();
+				output.Text = JsonFormatter.PrettyJson(jsonObject.ToString());
 				isConvertingMap = false;
 				return;
 			}
