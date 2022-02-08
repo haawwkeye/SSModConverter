@@ -163,8 +163,6 @@ namespace ModMapConverter
 
 		private void Convert(object sender, MouseEventArgs e)
 		{
-			MessageBox.Show("THIS MAYBE OUTDATED", "WARNING");
-
 			bool fakeCursor = FakeCursor.Checked;
 			bool osuNotes = OsuNote.Checked;
 
@@ -197,6 +195,24 @@ namespace ModMapConverter
 			}
 			else
 			{
+				if (fakeCursor)
+                {
+					var result = MessageBox.Show("fake cursor maybe broken due to mod map format changing\ncontinue?", "Warning", MessageBoxButtons.YesNo);
+					if (result == DialogResult.No)
+					{
+						return;
+					}
+				}
+
+				if (osuNotes)
+				{
+					var result = MessageBox.Show("osu! notes maybe broken due to mod map format changing\ncontinue?", "Warning", MessageBoxButtons.YesNo);
+					if (result == DialogResult.No)
+					{
+						return;
+					}
+				}
+
 				if (type == "BS" && text.StartsWith("beatsaver://"))
                 {
 					key = text.Substring(12);
