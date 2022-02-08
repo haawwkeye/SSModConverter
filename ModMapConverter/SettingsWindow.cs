@@ -13,6 +13,8 @@ namespace ModMapConverter
     public partial class SettingsWindow : Form
     {
         public MainWindow mainWindow { get; internal set; }
+        public ColorsWindow colorsWindow { get; internal set; } = new ColorsWindow();
+        public bool runningColors { get; internal set; }
 
         public SettingsWindow()
         {

@@ -38,6 +38,8 @@ namespace ModMapConverter
             this.CloseBtn = new System.Windows.Forms.Button();
             this.SaveBtn = new System.Windows.Forms.Button();
             this.SettingsPanel = new System.Windows.Forms.Panel();
+            this.Change_Colors = new System.Windows.Forms.Button();
+            this.Change_Colors_Text = new System.Windows.Forms.Label();
             this.Notes_change_fog_text = new System.Windows.Forms.Label();
             this.Notes_change_fog = new System.Windows.Forms.CheckBox();
             this.desc = new System.Windows.Forms.Label();
@@ -56,6 +58,7 @@ namespace ModMapConverter
             // 
             // CloseBtn
             // 
+            this.CloseBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CloseBtn.Location = new System.Drawing.Point(138, 205);
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.Size = new System.Drawing.Size(114, 24);
@@ -66,6 +69,7 @@ namespace ModMapConverter
             // 
             // SaveBtn
             // 
+            this.SaveBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveBtn.Location = new System.Drawing.Point(16, 205);
             this.SaveBtn.Name = "SaveBtn";
             this.SaveBtn.Size = new System.Drawing.Size(116, 24);
@@ -78,6 +82,8 @@ namespace ModMapConverter
             // 
             this.SettingsPanel.AutoScroll = true;
             this.SettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.SettingsPanel.Controls.Add(this.Change_Colors);
+            this.SettingsPanel.Controls.Add(this.Change_Colors_Text);
             this.SettingsPanel.Controls.Add(this.Notes_change_fog_text);
             this.SettingsPanel.Controls.Add(this.Notes_change_fog);
             this.SettingsPanel.Cursor = System.Windows.Forms.Cursors.Default;
@@ -86,11 +92,33 @@ namespace ModMapConverter
             this.SettingsPanel.Size = new System.Drawing.Size(236, 113);
             this.SettingsPanel.TabIndex = 7;
             // 
-            // label1
+            // Change_Colors
+            // 
+            this.Change_Colors.AutoSize = true;
+            this.Change_Colors.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Change_Colors.Location = new System.Drawing.Point(0, 72);
+            this.Change_Colors.Name = "Change_Colors";
+            this.Change_Colors.Size = new System.Drawing.Size(232, 23);
+            this.Change_Colors.TabIndex = 4;
+            this.Change_Colors.Text = "Change Colors";
+            this.Change_Colors.UseVisualStyleBackColor = true;
+            this.Change_Colors.Visible = false;
+            // 
+            // Change_Colors_Text
+            // 
+            this.Change_Colors_Text.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Change_Colors_Text.Location = new System.Drawing.Point(0, 52);
+            this.Change_Colors_Text.Name = "Change_Colors_Text";
+            this.Change_Colors_Text.Size = new System.Drawing.Size(231, 17);
+            this.Change_Colors_Text.TabIndex = 3;
+            this.Change_Colors_Text.Text = "Change the colors from default";
+            this.Change_Colors_Text.Visible = false;
+            // 
+            // Notes_change_fog_text
             // 
             this.Notes_change_fog_text.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Notes_change_fog_text.Location = new System.Drawing.Point(3, 0);
-            this.Notes_change_fog_text.Name = "label1";
+            this.Notes_change_fog_text.Location = new System.Drawing.Point(1, 0);
+            this.Notes_change_fog_text.Name = "Notes_change_fog_text";
             this.Notes_change_fog_text.Size = new System.Drawing.Size(228, 26);
             this.Notes_change_fog_text.TabIndex = 1;
             this.Notes_change_fog_text.Text = "Automatically allow notes to change the fog";
@@ -98,7 +126,7 @@ namespace ModMapConverter
             // Notes_change_fog
             // 
             this.Notes_change_fog.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Notes_change_fog.Location = new System.Drawing.Point(3, 29);
+            this.Notes_change_fog.Location = new System.Drawing.Point(1, 29);
             this.Notes_change_fog.Name = "Notes_change_fog";
             this.Notes_change_fog.Size = new System.Drawing.Size(228, 20);
             this.Notes_change_fog.TabIndex = 0;
@@ -135,6 +163,7 @@ namespace ModMapConverter
             this.Text = "Mod Map Converter by Kermeet";
             this.TopMost = true;
             this.SettingsPanel.ResumeLayout(false);
+            this.SettingsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -154,5 +183,7 @@ namespace ModMapConverter
         private CheckBox Notes_change_fog;
 
         private Label Notes_change_fog_text;
+        private Button Change_Colors;
+        private Label Change_Colors_Text;
     }
 }
