@@ -426,7 +426,7 @@ namespace ModMapConverter
 						}
 					}
 
-					output.Text = currentMap.ToString();
+					output.Text = JsonFormatter.PrettyJson(currentMap.ToString());
 				/**/
 				}
 				catch (Exception ex)
