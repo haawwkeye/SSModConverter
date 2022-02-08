@@ -163,6 +163,8 @@ namespace ModMapConverter
 
 		private void Convert(object sender, MouseEventArgs e)
 		{
+			MessageBox.Show("THIS MAYBE OUTDATED", "WARNING");
+
 			bool fakeCursor = FakeCursor.Checked;
 			bool osuNotes = OsuNote.Checked;
 
@@ -447,7 +449,7 @@ namespace ModMapConverter
 				{
 				/**/
 					isConvertingMap = true;
-					//MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
+					MessageBox.Show("Beat Saber JSON files not supported yet.", "Error");
 					//string info = "";
 
 					if (key != "")
