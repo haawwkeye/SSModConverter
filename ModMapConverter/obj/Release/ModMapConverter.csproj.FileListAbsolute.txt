@@ -25,3 +25,5 @@ H:\SSModConverter\ModMapConverter\obj\Release\ModMapConverter.csproj.CoreCompile
 H:\SSModConverter\ModMapConverter\obj\Release\ModMapConverter.csproj.CopyComplete
 H:\SSModConverter\ModMapConverter\obj\Release\ModMapConverter.exe
 H:\SSModConverter\ModMapConverter\obj\Release\ModMapConverter.pdb
+H:\SSModConverter\ModMapConverter\bin\Release\System.Json.xml
+H:\SSModConverter\ModMapConverter\obj\Release\ModMapConverter.ColorsWindow.resources
